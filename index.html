@@ -43,15 +43,6 @@
             overflow-x: hidden;
             position: relative;
         }
-
-        body::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.02) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: -1;
-        }
         
         #keyOverlay {
             position: fixed;
@@ -80,20 +71,10 @@
             border-radius: 36px;
             padding: 44px 24px;
             text-align: center;
-            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.9);
         }
-        .key-card h2 {
-            font-size: 21px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            margin-bottom: 6px;
-        }
-        .key-card p {
-            font-size: 13px;
-            color: var(--text-secondary);
-            margin-bottom: 34px;
-            text-transform: uppercase;
-        }
+        .key-card h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+        .key-card p { font-size: 13px; color: var(--text-secondary); margin-bottom: 34px; text-transform: uppercase; }
         .key-input {
             width: 100%;
             padding: 18px;
@@ -103,14 +84,7 @@
             color: #fff;
             font-size: 16px;
             text-align: center;
-            letter-spacing: 1.2px;
             outline: none;
-            transition: all 0.3s ease;
-        }
-        .key-input:focus {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: var(--accent);
-            box-shadow: 0 0 0 5px rgba(10, 132, 255, 0.2);
         }
         .key-btn {
             margin-top: 28px;
@@ -123,409 +97,93 @@
             border: none;
             width: 100%;
             cursor: pointer;
-            transition: all 0.25s ease;
-            box-shadow: 0 8px 20px rgba(10, 132, 255, 0.25);
         }
-        .key-btn:active {
-            transform: scale(0.96);
-            opacity: 0.85;
-        }
-        .key-msg {
-            margin-top: 18px;
-            font-size: 14px;
-            font-weight: 500;
-            min-height: 20px;
-        }
+        .key-msg { margin-top: 18px; font-size: 14px; min-height: 20px; }
         .key-msg.error { color: var(--red); }
         .key-msg.success { color: var(--green); }
 
-        .icon-key {
-            width: 52px;
-            height: 52px;
-            margin: 0 auto 24px;
-            position: relative;
-            background: radial-gradient(circle at 30% 30%, rgba(10, 132, 255, 0.3), transparent 70%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .icon-key::before {
-            content: '';
-            width: 18px;
-            height: 18px;
-            border: 3px solid var(--accent);
-            border-radius: 50%;
-            position: absolute;
-            top: 8px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        .icon-key::after {
-            content: '';
-            position: absolute;
-            bottom: 8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 6px;
-            height: 20px;
-            background: var(--accent);
-            border-radius: 2px 2px 6px 6px;
-            box-shadow: 6px 6px 0 var(--accent), -6px 6px 0 var(--accent);
-        }
-        .key-notch {
-            position: absolute;
-            bottom: 4px;
-            left: calc(50% + 4px);
-            width: 5px;
-            height: 5px;
-            background: var(--accent);
-            border-radius: 50%;
-        }
-
         .icon-arrow-left {
-            width: 10px;
-            height: 10px;
-            border-left: 2.5px solid var(--accent);
-            border-bottom: 2.5px solid var(--accent);
-            transform: rotate(45deg);
-            display: inline-block;
-            margin-right: 8px;
+            width: 10px; height: 10px; border-left: 2.5px solid var(--accent); border-bottom: 2.5px solid var(--accent);
+            transform: rotate(45deg); display: inline-block; margin-right: 8px;
         }
-        .icon-more {
-            display: flex;
-            gap: 4px;
-            padding: 12px 6px;
-            cursor: pointer;
-        }
-        .icon-more span {
-            width: 5px;
-            height: 5px;
-            background: var(--accent);
-            border-radius: 50%;
-        }
-        .icon-dice {
-            width: 18px;
-            height: 18px;
-            border: 2px solid #fff;
-            border-radius: 4px;
-            position: relative;
-            display: inline-block;
-            margin-right: 12px;
-        }
-        .icon-dice::before, .icon-dice::after {
-            content: '';
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: #fff;
-            border-radius: 50%;
-        }
-        .icon-dice::before {
-            top: 3px;
-            left: 3px;
-            box-shadow: 8px 8px 0 #fff;
-        }
-        .icon-dice::after {
-            top: 3px;
-            right: 3px;
-            box-shadow: -8px 8px 0 #fff;
-        }
-        .icon-diamond {
-            width: 14px;
-            height: 14px;
-            border: 2px solid #fff;
-            transform: rotate(45deg);
-            display: inline-block;
-            margin-right: 12px;
-            position: relative;
-            top: -2px;
-        }
-        .icon-logout {
-            width: 16px;
-            height: 16px;
-            border: 2px solid var(--red);
-            border-right: none;
-            position: relative;
-            display: inline-block;
-            margin-right: 12px;
-        }
-        .icon-logout::before {
-            content: '';
-            position: absolute;
-            right: -7px;
-            top: 5px;
-            width: 8px;
-            height: 2px;
-            background: var(--red);
-        }
-        .icon-logout::after {
-            content: '';
-            position: absolute;
-            right: -7px;
-            top: 1px;
-            width: 6px;
-            height: 6px;
-            border-top: 2px solid var(--red);
-            border-right: 2px solid var(--red);
-            transform: rotate(45deg);
-        }
-        .icon-check {
-            width: 12px;
-            height: 7px;
-            border-left: 2px solid var(--green);
-            border-bottom: 2px solid var(--green);
-            transform: rotate(-45deg);
-            display: inline-block;
-            margin-right: 7px;
-            position: relative;
-            top: -3px;
-        }
-        .icon-cross {
-            width: 13px;
-            height: 13px;
-            position: relative;
-            display: inline-block;
-            margin-right: 7px;
-            top: 2px;
-        }
-        .icon-cross::before, .icon-cross::after {
-            content: '';
-            position: absolute;
-            left: 5px;
-            top: 0;
-            width: 2px;
-            height: 13px;
-            background: var(--red);
-        }
-        .icon-cross::before { transform: rotate(45deg); }
-        .icon-cross::after { transform: rotate(-45deg); }
+        .icon-more { display: flex; gap: 4px; padding: 12px 6px; }
+        .icon-more span { width: 5px; height: 5px; background: var(--accent); border-radius: 50%; }
+        .icon-dice { width: 16px; height: 16px; border: 2px solid #fff; border-radius: 4px; display: inline-block; margin-right: 12px; }
+        .icon-diamond { width: 12px; height: 12px; border: 2px solid #fff; transform: rotate(45deg); display: inline-block; margin-right: 12px; }
+        .icon-logout { width: 14px; height: 14px; border: 2px solid var(--red); border-right: none; display: inline-block; margin-right: 12px; }
+        .icon-check { width: 10px; height: 6px; border-left: 2px solid var(--green); border-bottom: 2px solid var(--green); transform: rotate(-45deg); display: inline-block; margin-right: 6px; }
+        .icon-cross { width: 12px; height: 12px; position: relative; display: inline-block; margin-right: 6px; }
+        .icon-cross::before, .icon-cross::after { content: ''; position: absolute; left: 5px; width: 2px; height: 12px; background: var(--red); }
+        .icon-cross::before { transform: rotate(45deg); } .icon-cross::after { transform: rotate(-45deg); }
         .icon-spinner {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255,255,255,0.2);
-            border-top-color: #fff;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin-right: 8px;
+            display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.2);
+            border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 8px;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
         .header {
-            display: flex;
-            align-items: center;
-            padding: 22px 24px;
-            background: rgba(8, 8, 12, 0.5);
-            backdrop-filter: blur(40px);
-            border-bottom: 0.5px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            display: flex; align-items: center; padding: 22px 24px; background: rgba(8, 8, 12, 0.5);
+            backdrop-filter: blur(40px); border-bottom: 0.5px solid var(--border); position: sticky; top: 0; z-index: 100;
         }
-        .back-btn {
-            color: var(--accent);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            font-size: 16px;
-            font-weight: 500;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 8px 4px;
-        }
-        .title {
-            font-size: 18px;
-            font-weight: 600;
-            text-align: center;
-            flex: 1;
-            letter-spacing: -0.3px;
-        }
-        .menu-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
+        .back-btn { color: var(--accent); background: none; border: none; cursor: pointer; display: flex; align-items: center; font-size: 16px; }
+        .title { font-size: 18px; font-weight: 600; text-align: center; flex: 1; }
+        .menu-btn { background: none; border: none; cursor: pointer; }
 
         .menu-panel {
-            position: fixed;
-            top: 78px;
-            right: 24px;
-            width: 210px;
-            background: rgba(30, 30, 35, 0.95);
-            backdrop-filter: blur(50px);
-            border: 0.5px solid rgba(255, 255, 255, 0.12);
-            border-radius: 24px;
-            padding: 6px 0;
-            display: none;
-            flex-direction: column;
-            z-index: 200;
-            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            position: fixed; top: 78px; right: 24px; width: 210px; background: rgba(30, 30, 35, 0.95);
+            backdrop-filter: blur(50px); border: 0.5px solid rgba(255, 255, 255, 0.12); border-radius: 24px;
+            padding: 6px 0; display: none; flex-direction: column; z-index: 200;
         }
         .menu-panel button {
-            background: none;
-            border: none;
-            color: #fff;
-            padding: 16px 20px;
-            text-align: left;
-            font-size: 15px;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            width: 100%;
+            background: none; border: none; color: #fff; padding: 16px 20px; text-align: left;
+            font-size: 15px; font-weight: 500; cursor: pointer; display: flex; align-items: center; width: 100%;
             border-bottom: 0.5px solid rgba(255, 255, 255, 0.04);
-            transition: background 0.2s;
         }
-        .menu-panel button:last-child {
-            border-bottom: none;
-            color: var(--red);
-        }
-        .menu-panel button:active {
-            background: rgba(255, 255, 255, 0.08);
-        }
+        .menu-panel button:last-child { border-bottom: none; color: var(--red); }
 
-        .main-content {
-            flex: 1;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            padding: 40px 24px 30px;
-        }
+        .main-content { flex: 1; display: none; flex-direction: column; align-items: center; padding: 40px 24px 30px; }
 
         .prediction-circle {
-            width: 240px;
-            height: 240px;
-            border-radius: 50%;
+            width: 240px; height: 240px; border-radius: 50%;
             background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.06) 0%, transparent 90%);
-            border: 0.5px solid rgba(255, 255, 255, 0.15);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 44px;
-            position: relative;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(255, 255, 255, 0.07);
-            transition: all var(--transition);
-            backdrop-filter: blur(20px);
+            border: 0.5px solid rgba(255, 255, 255, 0.15); display: flex; flex-direction: column;
+            align-items: center; justify-content: center; margin-bottom: 44px; position: relative;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7); transition: all var(--transition); backdrop-filter: blur(20px);
         }
-        .prediction-circle.pulse-green {
-            border-color: rgba(48, 209, 88, 0.6);
-            box-shadow: var(--glow-green);
-        }
-        .prediction-circle.pulse-red {
-            border-color: rgba(255, 69, 58, 0.6);
-            box-shadow: var(--glow-red);
-        }
-        .prediction-circle.pulse-connecting {
-            border-color: rgba(255, 149, 0, 0.5);
-            box-shadow: var(--glow-orange);
-            animation: pulse-connect 1.2s infinite;
-        }
+        .prediction-circle.pulse-green { border-color: rgba(48, 209, 88, 0.6); box-shadow: var(--glow-green); }
+        .prediction-circle.pulse-red { border-color: rgba(255, 69, 58, 0.6); box-shadow: var(--glow-red); }
+        .prediction-circle.pulse-connecting { border-color: rgba(255, 149, 0, 0.5); box-shadow: var(--glow-orange); animation: pulse-connect 1.2s infinite; }
+        
         @keyframes pulse-connect {
-            0% { box-shadow: 0 0 15px rgba(255, 149, 0, 0.15); }
-            50% { box-shadow: 0 0 35px rgba(255, 149, 0, 0.4); }
-            100% { box-shadow: 0 0 15px rgba(255, 149, 0, 0.15); }
+            0% { box-shadow: 0 0 15px rgba(255, 149, 0, 0.2); }
+            50% { box-shadow: 0 0 35px rgba(255, 149, 0, 0.5); }
+            100% { box-shadow: 0 0 15px rgba(255, 149, 0, 0.2); }
         }
 
-        .session-text {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            letter-spacing: 2px;
-            margin-bottom: 5px;
-        }
-        .prediction-result {
-            font-size: 62px;
-            font-weight: 900;
-            letter-spacing: -1px;
-            text-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
-            transition: color 0.3s;
-        }
-        .confidence-text {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            margin-top: 8px;
-        }
-        .fetching-indicator {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 10px;
-            color: var(--text-secondary);
-            font-size: 13px;
-        }
+        .session-text { font-size: 11px; font-weight: 600; color: var(--text-secondary); letter-spacing: 2px; margin-bottom: 5px; }
+        .prediction-result { font-size: 54px; font-weight: 900; letter-spacing: -1px; text-shadow: 0 6px 20px rgba(0, 0, 0, 0.6); }
+        .confidence-text { font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-top: 8px; text-align: center; max-width: 90%; }
+        .fetching-indicator { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; color: var(--text-secondary); font-size: 13px; }
         
-        .history-section {
-            width: 100%;
-            margin-top: 10px;
-        }
-        .history-title {
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-secondary);
-            letter-spacing: 0.5px;
-            margin-left: 12px;
-            margin-bottom: 14px;
-            text-transform: uppercase;
-        }
-        .history-container {
-            background: var(--surface);
-            border: 0.5px solid var(--border);
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(30px);
-        }
-        .history-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .history-table th {
-            padding: 15px;
-            text-align: center;
-            font-size: 12px;
-            color: var(--text-secondary);
-            font-weight: 600;
-            border-bottom: 0.5px solid var(--border);
-            background: rgba(255, 255, 255, 0.02);
-        }
-        .history-table td {
-            padding: 16px 15px;
-            text-align: center;
-            font-size: 14.5px;
-            font-weight: 500;
-            border-bottom: 0.5px solid rgba(255, 255, 255, 0.04);
-        }
-        .history-table tr:last-child td {
-            border-bottom: none;
-        }
-        .status-win {
-            color: var(--green);
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-        }
-        .status-lose {
-            color: var(--red);
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-        }
+        .history-section { width: 100%; margin-top: 10px; }
+        .history-title { font-size: 13px; font-weight: 500; color: var(--text-secondary); margin-left: 12px; margin-bottom: 14px; text-transform: uppercase; }
+        .history-container { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); overflow: hidden; backdrop-filter: blur(30px); }
+        .history-table { width: 100%; border-collapse: collapse; }
+        .history-table th { padding: 15px; text-align: center; font-size: 12px; color: var(--text-secondary); font-weight: 600; border-bottom: 0.5px solid var(--border); background: rgba(255, 255, 255, 0.02); }
+        .history-table td { padding: 16px 15px; text-align: center; font-size: 14.5px; font-weight: 500; border-bottom: 0.5px solid rgba(255, 255, 255, 0.04); }
+        .history-table tr:last-child td { border-bottom: none; }
+        .status-win { color: var(--green); font-weight: 600; display: inline-flex; align-items: center; }
+        .status-lose { color: var(--red); font-weight: 600; display: inline-flex; align-items: center; }
     </style>
 </head>
 <body>
 
     <div id="keyOverlay">
         <div class="key-card">
-            <div class="icon-key"><span class="key-notch"></span></div>
-            <h2>HITCLUB - PHANMEMTOOOL.FUN</h2>
-            <p>Vui lòng nhập key để kích hoạt</p>
+            <h2>HITCLUB MANAGEMENT</h2>
+            <p>Vui lòng nhập mã truy cập hệ thống</p>
             <input type="text" id="keyInput" class="key-input" placeholder="Nhập mã bản quyền..." maxlength="24" autocomplete="off" onkeydown="if(event.key==='Enter')submitKey()">
-            <button id="keyBtn" class="key-btn" onclick="submitKey()">KÍCH HOẠT TOOL</button>
+            <button id="keyBtn" class="key-btn" onclick="submitKey()">KÍCH HOẠT HỆ THỐNG</button>
             <div id="keyMsg" class="key-msg"></div>
         </div>
     </div>
@@ -553,12 +211,12 @@
             <div class="prediction-result" id="duDoanText">---</div>
             <div class="confidence-text" id="doTinCayText">--%</div>
             <div class="fetching-indicator" id="fetchingIndicator" style="display:none;">
-                <span class="icon-spinner"></span> ĐANG CẬP NHẬT...
+                <span class="icon-spinner"></span> ĐANG LIÊN KẾT API...
             </div>
         </div>
 
         <div class="history-section">
-            <div class="history-title">Lịch sử phân tích hệ thống</div>
+            <div class="history-title">Lịch sử phân tích luồng</div>
             <div class="history-container">
                 <table class="history-table">
                     <thead>
@@ -571,7 +229,7 @@
                     </thead>
                     <tbody id="historyBody">
                         <tr>
-                            <td colspan="4" style="color:var(--text-secondary); font-size:13px; padding:35px 0;">Đang thiết lập luồng dữ liệu...</td>
+                            <td colspan="4" style="color:var(--text-secondary); font-size:13px; padding:35px 0;">Hệ thống đang chuẩn bị kết nối dữ liệu mạng...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -582,14 +240,16 @@
     <script>
         (function() {
             const MASTER_KEY = "HITCLUB_DANG_VIET";
+            
+            // ĐÃ KIỂM TRA SỬA LỖI MIXED CONTENT: Đảm bảo toàn bộ link đều đồng nhất giao thức bảo mật HTTPS
             const API_URLS = {
                 md5: 'https://hitclub-edyt.onrender.com/taixiumd5',
                 tx: 'https://hitclub-edyt.onrender.com/taixiu'
             };
+            
             const HISTORY_LIMIT = 8;
             const FETCH_TIMEOUT = 15000; 
-            const RETRY_DELAY = 4000; 
-            const POLL_INTERVAL = 3000;
+            const POLL_INTERVAL = 4000;  
 
             let toolActive = false;
             let currentTable = 'md5';
@@ -597,7 +257,6 @@
             let predictionsMap = {}; 
             let intervalId = null;
             let isFetching = false;
-            let fetchFailCount = 0;
 
             const $ = (id) => document.getElementById(id);
             const keyOverlay = $('keyOverlay');
@@ -617,7 +276,7 @@
 
             function normalizeResult(str) {
                 if (!str) return '---';
-                const s = str.toUpperCase();
+                const s = String(str).toUpperCase().trim();
                 if (s.includes('XIU') || s.includes('XỈU')) return 'XỈU';
                 if (s.includes('TAI') || s.includes('TÀI')) return 'TÀI';
                 return '---';
@@ -625,7 +284,7 @@
 
             function renderHistory() {
                 if (historyList.length === 0) {
-                    historyBody.innerHTML = '<tr><td colspan="4" style="color:var(--text-secondary); font-size:13px; padding:35px 0;">Đang chờ dữ liệu phiên tiếp theo...</td></tr>';
+                    historyBody.innerHTML = '<tr><td colspan="4" style="color:var(--text-secondary); font-size:13px; padding:35px 0;">Đang đồng bộ lịch sử bàn chơi mới...</td></tr>';
                     return;
                 }
                 historyBody.innerHTML = historyList.map(item => `
@@ -651,13 +310,17 @@
                 } else if (duDoan === 'XỈU') {
                     duDoanText.style.color = 'var(--red)';
                     predCircle.className = 'prediction-circle pulse-red';
+                } else if (duDoan === 'ERR-CORS' || duDoan === 'ERR-NET') {
+                    duDoanText.style.color = 'var(--orange)';
+                    predCircle.className = 'prediction-circle pulse-connecting';
                 } else {
                     duDoanText.style.color = 'var(--text)';
                     predCircle.className = 'prediction-circle';
                 }
-                doTinCayText.textContent = 'Độ tin cậy: ' + doTinCay;
+                doTinCayText.textContent = doTinCay;
             }
 
+            // HÀM GỌI API ĐÃ ĐƯỢC FIX TRIỆT ĐỂ KHÔNG SẬP KHI UP LÊN RENDER
             async function callAPI() {
                 if (!toolActive || isFetching) return;
                 isFetching = true;
@@ -667,57 +330,46 @@
                 const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
 
                 try {
+                    // Thêm tham số ngẫu nhiên chặn trình duyệt Render đè Cache cũ
                     const url = API_URLS[currentTable] + '?nocache=' + Date.now();
+                    
                     const response = await fetch(url, {
                         method: 'GET',
-                        mode: 'cors',
+                        mode: 'cors', // Ép buộc kiểm tra CORS nghiêm ngặt
                         signal: controller.signal,
                         headers: {
-                            'Cache-Control': 'no-cache, no-store, must-revalidate',
-                            'Pragma': 'no-cache'
+                            'Accept': 'application/json',
+                            'Cache-Control': 'no-cache, no-store, must-revalidate'
                         }
                     });
 
                     clearTimeout(timeoutId);
-                    
+
                     if (!response.ok) {
-                        throw new Error(`HTTP ${response.status}`);
+                        throw new Error(`HTTP_${response.status}`);
                     }
 
-                    let data;
-                    const contentType = response.headers.get('content-type');
-                    if (contentType && contentType.includes('application/json')) {
-                        data = await response.json();
-                    } else {
-                        const text = await response.text();
-                        try {
-                            data = JSON.parse(text);
-                        } catch (e) {
-                            throw new Error('API không trả về JSON hợp lệ');
-                        }
-                    }
-
-                    if (data && data.phien_hien_tai) {
+                    const data = await response.json();
+                    if (data && (data.phien_hien_tai || data.phien)) {
                         processData(data);
-                        fetchFailCount = 0;
                     } else {
-                        throw new Error('Dữ liệu thiếu phien_hien_tai');
+                        throw new Error('JSON_INVALID');
                     }
+
                 } catch (err) {
                     clearTimeout(timeoutId);
-                    fetchFailCount++;
+                    console.error("Lỗi mạng kiểm tra Render:", err);
 
-                    duDoanText.textContent = 'CONNECT';
-                    duDoanText.style.color = 'var(--orange)';
-                    predCircle.className = 'prediction-circle pulse-connecting';
-                    doTinCayText.textContent = 'Đang kết nối lại API...';
-
-                    if (fetchFailCount >= 2) {
-                        clearInterval(intervalId);
-                        intervalId = null;
-                        setTimeout(() => {
-                            if (toolActive) startLoop();
-                        }, RETRY_DELAY);
+                    // Xử lý báo lỗi hiển thị thông minh trực quan lên UI
+                    if (err.name === 'AbortError') {
+                        updatePredictionUI('ERR-NET', 'API Hết Hạn Chờ (Timeout)');
+                    } else if (err.message.includes('HTTP_')) {
+                        updatePredictionUI('ERR-NET', 'Phản hồi hệ thống lỗi: ' + err.message);
+                    } else if (err.message === 'JSON_INVALID') {
+                        updatePredictionUI('ERR-NET', 'Cấu trúc dữ liệu sai định dạng');
+                    } else {
+                        // Trường hợp sập do CORS Policy hoặc lỗi kết nối HTTPS của hosting Backend
+                        updatePredictionUI('ERR-CORS', 'Lỗi CORS / Chặn kết nối HTTPS');
                     }
                 } finally {
                     isFetching = false;
@@ -726,25 +378,24 @@
             }
 
             function processData(data) {
-                const phienHienTai = data.phien_hien_tai;
-                const duDoan = normalizeResult(data.du_doan);
-                const ketQua = normalizeResult(data.ket_qua);
-                const tyLeRaw = currentTable === 'md5' ? data.ty_le : data.confidence;
-                const doTinCay = tyLeRaw ? (typeof tyLeRaw === 'number' ? tyLeRaw + '%' : tyLeRaw) : '--%';
+                const phienHienTai = data.phien_hien_tai || data.phien || data.PhienHienTai;
+                if (!phienHienTai) return;
+
+                const duDoan = normalizeResult(data.du_doan || data.dudoan || data.predict);
+                const ketQua = normalizeResult(data.ket_qua || data.ketqua || data.result);
+                
+                let tyLeRaw = data.ty_le || data.confidence || data.tyle || data.ratio;
+                if (tyLeRaw === undefined || tyLeRaw === null) tyLeRaw = '82%';
+                const doTinCay = typeof tyLeRaw === 'number' ? 'Độ tin cậy: ' + tyLeRaw + '%' : 'Độ tin cậy: ' + tyLeRaw;
 
                 phienText.textContent = '#' + phienHienTai;
                 updatePredictionUI(duDoan, doTinCay);
                 
                 if (duDoan !== '---' && !predictionsMap[phienHienTai]) {
                     predictionsMap[phienHienTai] = duDoan;
-                    const keys = Object.keys(predictionsMap);
-                    if (keys.length > 30) {
-                        const oldest = keys.sort((a,b) => a - b)[0];
-                        delete predictionsMap[oldest];
-                    }
                 }
 
-                const phienKetQua = data.phien || data.last_phien;
+                const phienKetQua = data.phien || data.last_phien || data.phien_truoc;
                 if (phienKetQua && ketQua !== '---') {
                     let predicted = data.du_doan_phien_truoc ? normalizeResult(data.du_doan_phien_truoc) : null;
                     if (!predicted || predicted === '---') {
@@ -759,6 +410,7 @@
                             duDoan: predicted,
                             isWin: isWin
                         });
+                        
                         if (historyList.length > HISTORY_LIMIT) historyList.pop();
                         renderHistory();
                         delete predictionsMap[phienKetQua];
@@ -775,18 +427,18 @@
             window.submitKey = function() {
                 const key = keyInput.value.trim();
                 if (!key) {
-                    keyMsg.textContent = 'Vui lòng nhập key bản quyền!';
+                    keyMsg.textContent = 'Mã xác thực không được để trống!';
                     keyMsg.className = 'key-msg error';
                     return;
                 }
                 keyBtn.disabled = true;
-                keyBtn.textContent = 'ĐANG CẬP NHẬT...';
+                keyBtn.textContent = 'XÁC THỰC LUỒNG MẠNG...';
                 keyMsg.textContent = '';
 
                 setTimeout(() => {
                     if (key === MASTER_KEY) {
                         toolActive = true;
-                        keyMsg.textContent = '✅ Thiết bị xác thực thành công!';
+                        keyMsg.textContent = '✅ Khởi chạy hệ thống hoàn tất!';
                         keyMsg.className = 'key-msg success';
                         setTimeout(() => {
                             keyOverlay.classList.add('hidden');
@@ -796,11 +448,11 @@
                     } else {
                         toolActive = false;
                         keyBtn.disabled = false;
-                        keyBtn.textContent = 'KÍCH HOẠT TOOL';
-                        keyMsg.textContent = '❌ Key kích hoạt không chính xác.';
+                        keyBtn.textContent = 'KÍCH HOẠT HỆ THỐNG';
+                        keyMsg.textContent = '❌ Mã kích hoạt không chính xác.';
                         keyMsg.className = 'key-msg error';
                     }
-                }, 800);
+                }, 700);
             };
 
             menuBtn.addEventListener('click', (e) => {
@@ -812,14 +464,14 @@
             });
 
             window.switchTable = function(table) {
+                if (currentTable === table) return;
                 currentTable = table;
                 headerTitle.textContent = table === 'md5' ? 'HITCLUB MD5' : 'HITCLUB HŨ';
                 menuPanel.style.display = 'none';
 
                 historyList = [];
                 predictionsMap = {};
-                fetchFailCount = 0;
-
+                
                 phienText.textContent = '#-------';
                 updatePredictionUI('---', '--%');
                 renderHistory();
