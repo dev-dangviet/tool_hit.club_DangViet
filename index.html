@@ -3,37 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>HITCLUB PREMIUM | DANG VIET</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <title>HITCLUB PREMIUM | iOS 26 EDITION</title>
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #000000;
-            --surface: rgba(20, 20, 25, 0.7);
-            --border: rgba(255, 255, 255, 0.08);
-            --accent: #0A84FF;
-            --green: #30D158;
-            --red: #FF453A;
-            --orange: #FF9500;
-            --text: #FFFFFF;
-            --text-secondary: rgba(255, 255, 255, 0.5);
-            --glow-green: 0 0 30px rgba(48, 209, 88, 0.25);
-            --glow-red: 0 0 30px rgba(255, 69, 58, 0.25);
-            --glow-orange: 0 0 20px rgba(255, 149, 0, 0.2);
-            --radius: 28px;
-            --transition: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            --ios-bg: #020205;
+            --ios-surface: rgba(22, 22, 26, 0.65);
+            --ios-surface-solid: #121217;
+            --ios-border: rgba(255, 255, 255, 0.07);
+            --ios-accent: #0A84FF;
+            --ios-green: #30D158;
+            --ios-red: #FF453A;
+            --ios-orange: #FF9500;
+            --ios-text-primary: #FFFFFF;
+            --ios-text-secondary: rgba(255, 255, 255, 0.55);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
             -webkit-tap-highlight-color: transparent;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         body {
-            background: radial-gradient(circle at 50% 0%, rgba(10, 132, 255, 0.08) 0%, transparent 60%), var(--bg);
-            color: var(--text);
+            background: var(--ios-bg);
+            color: var(--ios-text-primary);
             min-height: 100vh;
             max-width: 430px;
             margin: 0 auto;
@@ -43,155 +39,232 @@
             overflow-x: hidden;
             position: relative;
         }
-        
-        #keyOverlay {
-            position: fixed;
-            inset: 0;
-            z-index: 1000;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(60px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-            transition: opacity 0.5s ease, visibility 0.5s;
-        }
-        #keyOverlay.hidden {
-            opacity: 0;
-            visibility: hidden;
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: -150px; left: -50px; width: 500px; height: 400px;
+            background: radial-gradient(circle, rgba(10, 132, 255, 0.18) 0%, rgba(0,0,0,0) 70%);
+            z-index: -1;
             pointer-events: none;
         }
 
-        .key-card {
-            width: 100%;
-            max-width: 340px;
-            background: rgba(30, 30, 35, 0.6);
-            backdrop-filter: blur(40px);
-            border: 0.5px solid rgba(255, 255, 255, 0.1);
-            border-radius: 36px;
-            padding: 44px 24px;
-            text-align: center;
-            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.9);
+        /* --- PURE CSS ICONS CORE --- */
+        .icon-key {
+            width: 44px; height: 44px; margin: 0 auto 16px;
+            position: relative; background: radial-gradient(circle, rgba(10, 132, 255, 0.2), transparent);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
         }
-        .key-card h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
-        .key-card p { font-size: 13px; color: var(--text-secondary); margin-bottom: 34px; text-transform: uppercase; }
-        .key-input {
-            width: 100%;
-            padding: 18px;
-            border-radius: 18px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 0.5px solid rgba(255, 255, 255, 0.04);
-            color: #fff;
-            font-size: 16px;
-            text-align: center;
-            outline: none;
+        .icon-key::before {
+            content: ''; width: 14px; height: 14px; border: 4px solid var(--ios-accent);
+            border-radius: 50%; position: absolute; top: 10px;
         }
-        .key-btn {
-            margin-top: 28px;
-            padding: 18px;
-            border-radius: 18px;
-            background: var(--accent);
-            color: #fff;
-            font-weight: 600;
-            font-size: 15px;
-            border: none;
-            width: 100%;
-            cursor: pointer;
+        .icon-key::after {
+            content: ''; width: 4px; height: 14px; background: var(--ios-accent);
+            position: absolute; bottom: 8px; box-shadow: 4px 4px 0 var(--ios-accent);
         }
-        .key-msg { margin-top: 18px; font-size: 14px; min-height: 20px; }
-        .key-msg.error { color: var(--red); }
-        .key-msg.success { color: var(--green); }
 
         .icon-arrow-left {
-            width: 10px; height: 10px; border-left: 2.5px solid var(--accent); border-bottom: 2.5px solid var(--accent);
-            transform: rotate(45deg); display: inline-block; margin-right: 8px;
+            width: 10px; height: 10px; border-left: 2.5px solid var(--ios-accent);
+            border-bottom: 2.5px solid var(--ios-accent); transform: rotate(45deg);
+            display: inline-block; margin-right: 6px;
         }
-        .icon-more { display: flex; gap: 4px; padding: 12px 6px; }
-        .icon-more span { width: 5px; height: 5px; background: var(--accent); border-radius: 50%; }
-        .icon-dice { width: 16px; height: 16px; border: 2px solid #fff; border-radius: 4px; display: inline-block; margin-right: 12px; }
-        .icon-diamond { width: 12px; height: 12px; border: 2px solid #fff; transform: rotate(45deg); display: inline-block; margin-right: 12px; }
-        .icon-logout { width: 14px; height: 14px; border: 2px solid var(--red); border-right: none; display: inline-block; margin-right: 12px; }
-        .icon-check { width: 10px; height: 6px; border-left: 2px solid var(--green); border-bottom: 2px solid var(--green); transform: rotate(-45deg); display: inline-block; margin-right: 6px; }
-        .icon-cross { width: 12px; height: 12px; position: relative; display: inline-block; margin-right: 6px; }
-        .icon-cross::before, .icon-cross::after { content: ''; position: absolute; left: 5px; width: 2px; height: 12px; background: var(--red); }
-        .icon-cross::before { transform: rotate(45deg); } .icon-cross::after { transform: rotate(-45deg); }
-        .icon-spinner {
-            display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.2);
-            border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 8px;
+
+        .icon-more {
+            display: flex; gap: 3.5px; padding: 10px 4px; cursor: pointer;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        .icon-more span {
+            width: 5px; height: 5px; background: var(--ios-accent); border-radius: 50%;
+        }
+
+        .icon-dice {
+            width: 16px; height: 16px; border: 2px solid #fff; border-radius: 4px;
+            position: relative; display: inline-block; margin-right: 8px;
+        }
+        .icon-dice::before, .icon-dice::after {
+            content: ''; position: absolute; width: 3px; height: 3px; background: #fff; border-radius: 50%;
+        }
+        .icon-dice::before { top: 2px; left: 2px; box-shadow: 7px 7px 0 #fff; }
+        .icon-dice::after { top: 2px; right: 2px; box-shadow: -7px 7px 0 #fff; }
+
+        .icon-diamond {
+            width: 12px; height: 12px; border: 2px solid #fff;
+            transform: rotate(45deg); display: inline-block; margin-right: 10px;
+            position: relative; top: -1px;
+        }
+
+        .icon-logout {
+            width: 14px; height: 14px; border: 2px solid var(--ios-red); border-right: none;
+            position: relative; display: inline-block; margin-right: 10px;
+        }
+        .icon-logout::before {
+            content: ''; position: absolute; right: -6px; top: 4px;
+            width: 8px; height: 2px; background: var(--ios-red);
+        }
+        .icon-logout::after {
+            content: ''; position: absolute; right: -6px; top: 1px;
+            width: 5px; height: 5px; border-top: 2px solid var(--ios-red);
+            border-right: 2px solid var(--ios-red); transform: rotate(45deg);
+        }
+
+        .icon-check {
+            width: 12px; height: 7px; border-left: 2.5px solid var(--ios-green);
+            border-bottom: 2.5px solid var(--ios-green); transform: rotate(-45deg);
+            display: inline-block; margin-right: 6px; position: relative; top: -2px;
+        }
+
+        .icon-cross {
+            width: 12px; height: 12px; position: relative; display: inline-block; margin-right: 6px; top: 1px;
+        }
+        .icon-cross::before, .icon-cross::after {
+            content: ''; position: absolute; left: 5px; top: 0; width: 2.5px; height: 12px; background: var(--ios-red);
+        }
+        .icon-cross::before { transform: rotate(45deg); }
+        .icon-cross::after { transform: rotate(-45deg); }
+
+        /* --- INTERFACE --- */
+        #keyOverlay {
+            position: fixed; inset: 0; z-index: 1000;
+            background: rgba(1, 1, 3, 0.88);
+            backdrop-filter: blur(40px);
+            display: flex; align-items: center; justify-content: center;
+            padding: 24px;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        #keyOverlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        
+        .key-card {
+            width: 100%; max-width: 340px;
+            background: var(--ios-surface);
+            border: 1px solid var(--ios-border);
+            border-radius: 28px; padding: 36px 24px;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.08);
+        }
+        .key-card h2 { font-size: 23px; font-weight: 700; letter-spacing: -0.4px; margin-bottom: 6px; }
+        .key-card p { font-size: 13.5px; color: var(--ios-text-secondary); margin-bottom: 28px; }
+        
+        .key-input {
+            width: 100%; padding: 16px; border-radius: 16px;
+            background: rgba(255, 255, 255, 0.05); 
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            color: #fff; font-size: 17px; text-align: center; letter-spacing: 1px;
+            outline: none; transition: all 0.25s ease;
+        }
+        .key-input:focus {
+            background: rgba(255, 255, 255, 0.09);
+            border-color: var(--ios-accent);
+            box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.15);
+        }
+        
+        .key-btn {
+            margin-top: 20px; padding: 16px; border-radius: 16px;
+            background: var(--ios-accent); color: #fff; font-weight: 600; font-size: 16px;
+            border: none; width: 100%; cursor: pointer; transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(10, 132, 255, 0.2);
+        }
+        .key-btn:active { transform: scale(0.97); opacity: 0.85; }
+        .key-msg { margin-top: 16px; font-size: 13px; font-weight: 500; min-height: 18px;}
+        .key-msg.error { color: var(--ios-red); }
+        .key-msg.success { color: var(--ios-green); }
 
         .header {
-            display: flex; align-items: center; padding: 22px 24px; background: rgba(8, 8, 12, 0.5);
-            backdrop-filter: blur(40px); border-bottom: 0.5px solid var(--border); position: sticky; top: 0; z-index: 100;
+            display: flex; align-items: center; padding: 20px 24px;
+            background: rgba(2, 2, 5, 0.6);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--ios-border);
+            position: sticky; top: 0; z-index: 100;
         }
-        .back-btn { color: var(--accent); background: none; border: none; cursor: pointer; display: flex; align-items: center; font-size: 16px; }
-        .title { font-size: 18px; font-weight: 600; text-align: center; flex: 1; }
+        .back-btn {
+            color: var(--ios-accent); text-decoration: none;
+            display: flex; align-items: center; font-size: 16px; font-weight: 500;
+        }
+        .title { font-size: 17px; font-weight: 600; text-align: center; flex: 1; letter-spacing: -0.2px; }
         .menu-btn { background: none; border: none; cursor: pointer; }
 
         .menu-panel {
-            position: fixed; top: 78px; right: 24px; width: 210px; background: rgba(30, 30, 35, 0.95);
-            backdrop-filter: blur(50px); border: 0.5px solid rgba(255, 255, 255, 0.12); border-radius: 24px;
-            padding: 6px 0; display: none; flex-direction: column; z-index: 200;
+            position: fixed; top: 76px; right: 24px; width: 190px;
+            background: rgba(22, 22, 27, 0.95);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--ios-border);
+            border-radius: 20px; padding: 6px 0;
+            display: none; flex-direction: column; z-index: 200;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
         }
         .menu-panel button {
-            background: none; border: none; color: #fff; padding: 16px 20px; text-align: left;
-            font-size: 15px; font-weight: 500; cursor: pointer; display: flex; align-items: center; width: 100%;
-            border-bottom: 0.5px solid rgba(255, 255, 255, 0.04);
+            background: none; border: none; color: #fff; padding: 14px 18px;
+            text-align: left; font-size: 14.5px; font-weight: 500; cursor: pointer;
+            display: flex; align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
         }
-        .menu-panel button:last-child { border-bottom: none; color: var(--red); }
+        .menu-panel button:last-child { border-bottom: none; color: var(--ios-red); }
+        .menu-panel button:active { background: rgba(255,255,255,0.08); }
 
-        .main-content { flex: 1; display: none; flex-direction: column; align-items: center; padding: 40px 24px 30px; }
+        .main-content {
+            flex: 1; display: flex; flex-direction: column; align-items: center; padding: 32px 24px;
+        }
 
         .prediction-circle {
-            width: 240px; height: 240px; border-radius: 50%;
-            background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.06) 0%, transparent 90%);
-            border: 0.5px solid rgba(255, 255, 255, 0.15); display: flex; flex-direction: column;
-            align-items: center; justify-content: center; margin-bottom: 44px; position: relative;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7); transition: all var(--transition); backdrop-filter: blur(20px);
+            width: 230px; height: 230px; border-radius: 50%;
+            background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid var(--ios-border);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            margin-bottom: 38px; position: relative;
+            box-shadow: 0 25px 45px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .prediction-circle.pulse-green { border-color: rgba(48, 209, 88, 0.6); box-shadow: var(--glow-green); }
-        .prediction-circle.pulse-red { border-color: rgba(255, 69, 58, 0.6); box-shadow: var(--glow-red); }
-        .prediction-circle.pulse-connecting { border-color: rgba(255, 149, 0, 0.5); box-shadow: var(--glow-orange); animation: pulse-connect 1.2s infinite; }
         
-        @keyframes pulse-connect {
-            0% { box-shadow: 0 0 15px rgba(255, 149, 0, 0.2); }
-            50% { box-shadow: 0 0 35px rgba(255, 149, 0, 0.5); }
-            100% { box-shadow: 0 0 15px rgba(255, 149, 0, 0.2); }
+        .prediction-circle.pulse-green { 
+            border-color: rgba(48, 209, 88, 0.45); 
+            box-shadow: 0 0 35px rgba(48, 209, 88, 0.15), inset 0 0 20px rgba(48, 209, 88, 0.05);
+        }
+        .prediction-circle.pulse-red { 
+            border-color: rgba(255, 69, 58, 0.45); 
+            box-shadow: 0 0 35px rgba(255, 69, 58, 0.15), inset 0 0 20px rgba(255, 69, 58, 0.05);
+        }
+        .prediction-circle.pulse-connecting {
+            border-color: rgba(255, 149, 0, 0.45);
+            box-shadow: 0 0 30px rgba(255, 149, 0, 0.2);
         }
 
-        .session-text { font-size: 11px; font-weight: 600; color: var(--text-secondary); letter-spacing: 2px; margin-bottom: 5px; }
-        .prediction-result { font-size: 54px; font-weight: 900; letter-spacing: -1px; text-shadow: 0 6px 20px rgba(0, 0, 0, 0.6); }
-        .confidence-text { font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-top: 8px; text-align: center; max-width: 90%; }
-        .fetching-indicator { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; color: var(--text-secondary); font-size: 13px; }
+        .session-text { font-size: 11.5px; font-weight: 600; color: var(--ios-text-secondary); letter-spacing: 1.5px; margin-bottom: 3px; }
+        .prediction-result { font-size: 54px; font-weight: 800; letter-spacing: -1px; text-shadow: 0 4px 15px rgba(0,0,0,0.4); }
+        .confidence-text { font-size: 15px; font-weight: 600; color: var(--ios-text-secondary); margin-top: 5px; }
+
+        .history-section { width: 100%; margin-top: 12px; }
+        .history-title { font-size: 13px; font-weight: 500; color: var(--ios-text-secondary); letter-spacing: 0.3px; margin-left: 12px; margin-bottom: 10px; text-transform: uppercase;}
         
-        .history-section { width: 100%; margin-top: 10px; }
-        .history-title { font-size: 13px; font-weight: 500; color: var(--text-secondary); margin-left: 12px; margin-bottom: 14px; text-transform: uppercase; }
-        .history-container { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); overflow: hidden; backdrop-filter: blur(30px); }
+        .history-container {
+            background: var(--ios-surface); border: 1px solid var(--ios-border);
+            border-radius: 22px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
         .history-table { width: 100%; border-collapse: collapse; }
-        .history-table th { padding: 15px; text-align: center; font-size: 12px; color: var(--text-secondary); font-weight: 600; border-bottom: 0.5px solid var(--border); background: rgba(255, 255, 255, 0.02); }
-        .history-table td { padding: 16px 15px; text-align: center; font-size: 14.5px; font-weight: 500; border-bottom: 0.5px solid rgba(255, 255, 255, 0.04); }
+        .history-table th {
+            padding: 14px; text-align: center; font-size: 12px; color: var(--ios-text-secondary); font-weight: 600;
+            border-bottom: 1px solid var(--ios-border); background: rgba(255, 255, 255, 0.01);
+        }
+        .history-table td { padding: 15px 14px; text-align: center; font-size: 14.5px; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.03); }
         .history-table tr:last-child td { border-bottom: none; }
-        .status-win { color: var(--green); font-weight: 600; display: inline-flex; align-items: center; }
-        .status-lose { color: var(--red); font-weight: 600; display: inline-flex; align-items: center; }
+        
+        .status-win { color: var(--ios-green); font-weight: 600; display: inline-flex; align-items: center; }
+        .status-lose { color: var(--ios-red); font-weight: 600; display: inline-flex; align-items: center; }
     </style>
 </head>
 <body>
 
     <div id="keyOverlay">
         <div class="key-card">
-            <h2>HITCLUB MANAGEMENT</h2>
-            <p>Vui lòng nhập mã truy cập hệ thống</p>
-            <input type="text" id="keyInput" class="key-input" placeholder="Nhập mã bản quyền..." maxlength="24" autocomplete="off" onkeydown="if(event.key==='Enter')submitKey()">
-            <button id="keyBtn" class="key-btn" onclick="submitKey()">KÍCH HOẠT HỆ THỐNG</button>
+            <div class="icon-key"></div>
+            <h2>Kích hoạt Thiết bị</h2>
+            <p>Nhập mã bản quyền của bạn để đồng bộ API</p>
+            <input type="text" id="keyInput" class="key-input" placeholder="Nhập mã bản quyền..." maxlength="24" autocomplete="off">
+            <button id="keyBtn" class="key-btn" onclick="submitKey()">Xác thực Thiết bị</button>
             <div id="keyMsg" class="key-msg"></div>
         </div>
     </div>
 
     <header class="header">
-        <button class="back-btn" onclick="location.reload()">
-            <span class="icon-arrow-left"></span> Trở lại
-        </button>
+        <a href="#" class="back-btn" onclick="location.reload()"><span class="icon-arrow-left"></span> Trở lại</a>
         <div class="title" id="headerTitle">HITCLUB MD5</div>
         <button class="menu-btn" id="menuBtn">
             <div class="icon-more"><span></span><span></span><span></span></div>
@@ -204,19 +277,16 @@
         <button onclick="location.reload()"><span class="icon-logout"></span> Đăng xuất</button>
     </div>
 
-    <div class="main-content" id="mainContent">
+    <div class="main-content" id="mainContent" style="display:none;">
         <div class="prediction-circle" id="predCircle">
             <div class="session-text">PHIÊN PHÂN TÍCH</div>
-            <div style="font-size:16px; font-weight:700; color:var(--accent); margin-bottom:4px;" id="phienText">#-------</div>
+            <div style="font-size:15px; font-weight:700; color:var(--ios-accent); margin-bottom:2px;" id="phienText">#-------</div>
             <div class="prediction-result" id="duDoanText">---</div>
             <div class="confidence-text" id="doTinCayText">--%</div>
-            <div class="fetching-indicator" id="fetchingIndicator" style="display:none;">
-                <span class="icon-spinner"></span> ĐANG LIÊN KẾT API...
-            </div>
         </div>
 
         <div class="history-section">
-            <div class="history-title">Lịch sử phân tích luồng</div>
+            <div class="history-title">Lịch sử phân tích hệ thống</div>
             <div class="history-container">
                 <table class="history-table">
                     <thead>
@@ -229,7 +299,7 @@
                     </thead>
                     <tbody id="historyBody">
                         <tr>
-                            <td colspan="4" style="color:var(--text-secondary); font-size:13px; padding:35px 0;">Hệ thống đang chuẩn bị kết nối dữ liệu mạng...</td>
+                            <td colspan="4" style="color:var(--ios-text-secondary); font-size:13px; padding:35px 0;">Đang thiết lập luồng dữ liệu...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -238,246 +308,224 @@
     </div>
 
     <script>
-        (function() {
-            const MASTER_KEY = "HITCLUB_DANG_VIET";
-            
-            // ĐÃ KIỂM TRA SỬA LỖI MIXED CONTENT: Đảm bảo toàn bộ link đều đồng nhất giao thức bảo mật HTTPS
-            const API_URLS = {
-                md5: 'https://hitclub-edyt.onrender.com/taixiumd5',
-                tx: 'https://hitclub-edyt.onrender.com/taixiu'
-            };
-            
-            const HISTORY_LIMIT = 8;
-            const FETCH_TIMEOUT = 15000; 
-            const POLL_INTERVAL = 4000;  
+        let toolActive = false; 
+        let currentTable = 'md5'; 
+        let history = []; 
+        let lastPred = null; 
+        let intervalId = null;
+        let isFetching = false;
 
-            let toolActive = false;
-            let currentTable = 'md5';
-            let historyList = []; 
-            let predictionsMap = {}; 
-            let intervalId = null;
-            let isFetching = false;
+        const MASTER_KEY = "HITCLUB_DANG_VIET";
 
-            const $ = (id) => document.getElementById(id);
-            const keyOverlay = $('keyOverlay');
-            const keyInput = $('keyInput');
-            const keyBtn = $('keyBtn');
-            const keyMsg = $('keyMsg');
-            const mainContent = $('mainContent');
-            const headerTitle = $('headerTitle');
-            const menuBtn = $('menuBtn');
-            const menuPanel = $('menuPanel');
-            const predCircle = $('predCircle');
-            const phienText = $('phienText');
-            const duDoanText = $('duDoanText');
-            const doTinCayText = $('doTinCayText');
-            const fetchingIndicator = $('fetchingIndicator');
-            const historyBody = $('historyBody');
+        // Đồng bộ danh sách API sạch bảo vệ chứng chỉ SSL HTTPS trên Render
+        const API_URLS = {
+            md5: 'https://hitclub-edyt.onrender.com/taixiumd5',
+            tx: 'https://hitclub-edyt.onrender.com/taixiu'
+        };
 
-            function normalizeResult(str) {
-                if (!str) return '---';
-                const s = String(str).toUpperCase().trim();
-                if (s.includes('XIU') || s.includes('XỈU')) return 'XỈU';
-                if (s.includes('TAI') || s.includes('TÀI')) return 'TÀI';
-                return '---';
+        // Sử dụng cổng Proxy CORS dự phòng thông minh tốc độ cao
+        const PROXY_URL = 'https://api.allorigins.win/get?url=';
+
+        function submitKey() {
+            const input = document.getElementById('keyInput');
+            const btn = document.getElementById('keyBtn');
+            const msg = document.getElementById('keyMsg');
+            const key = input.value.trim();
+
+            if (key.length === 0) {
+                msg.textContent = 'Vui lòng nhập mã bản quyền!'; 
+                msg.className = 'key-msg error'; 
+                return;
             }
 
-            function renderHistory() {
-                if (historyList.length === 0) {
-                    historyBody.innerHTML = '<tr><td colspan="4" style="color:var(--text-secondary); font-size:13px; padding:35px 0;">Đang đồng bộ lịch sử bàn chơi mới...</td></tr>';
-                    return;
-                }
-                historyBody.innerHTML = historyList.map(item => `
-                    <tr>
-                        <td style="color: var(--text-secondary);">#${item.phien}</td>
-                        <td style="color:${item.ketQua === 'TÀI' ? 'var(--green)' : 'var(--red)'}">${item.ketQua}</td>
-                        <td style="color:${item.duDoan === 'TÀI' ? 'var(--green)' : 'var(--red)'}">${item.duDoan}</td>
-                        <td>
-                            <span class="${item.isWin ? 'status-win' : 'status-lose'}">
-                                <span class="${item.isWin ? 'icon-check' : 'icon-cross'}"></span>
-                                ${item.isWin ? 'HÚP' : 'GÃY'}
-                            </span>
-                        </td>
-                    </tr>
-                `).join('');
-            }
+            btn.disabled = true; 
+            btn.textContent = 'Đang xác thực hệ thống...';
+            msg.textContent = '';
 
-            function updatePredictionUI(duDoan, doTinCay) {
-                duDoanText.textContent = duDoan;
-                if (duDoan === 'TÀI') {
-                    duDoanText.style.color = 'var(--green)';
-                    predCircle.className = 'prediction-circle pulse-green';
-                } else if (duDoan === 'XỈU') {
-                    duDoanText.style.color = 'var(--red)';
-                    predCircle.className = 'prediction-circle pulse-red';
-                } else if (duDoan === 'ERR-CORS' || duDoan === 'ERR-NET') {
-                    duDoanText.style.color = 'var(--orange)';
-                    predCircle.className = 'prediction-circle pulse-connecting';
-                } else {
-                    duDoanText.style.color = 'var(--text)';
-                    predCircle.className = 'prediction-circle';
-                }
-                doTinCayText.textContent = doTinCay;
-            }
-
-            // HÀM GỌI API ĐÃ ĐƯỢC FIX TRIỆT ĐỂ KHÔNG SẬP KHI UP LÊN RENDER
-            async function callAPI() {
-                if (!toolActive || isFetching) return;
-                isFetching = true;
-                fetchingIndicator.style.display = 'flex';
-
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
-
-                try {
-                    // Thêm tham số ngẫu nhiên chặn trình duyệt Render đè Cache cũ
-                    const url = API_URLS[currentTable] + '?nocache=' + Date.now();
+            setTimeout(() => {
+                if (key === MASTER_KEY) {
+                    toolActive = true; 
+                    msg.textContent = '✅ Thiết bị xác thực thành công! Đang đồng bộ...'; 
+                    msg.className = 'key-msg success';
                     
-                    const response = await fetch(url, {
-                        method: 'GET',
-                        mode: 'cors', // Ép buộc kiểm tra CORS nghiêm ngặt
-                        signal: controller.signal,
-                        headers: {
-                            'Accept': 'application/json',
-                            'Cache-Control': 'no-cache, no-store, must-revalidate'
-                        }
+                    setTimeout(() => {
+                        document.getElementById('keyOverlay').classList.add('hidden');
+                        document.getElementById('mainContent').style.display = '';
+                        startLoop(); 
+                    }, 700);
+                } else {
+                    toolActive = false;
+                    btn.disabled = false;
+                    btn.textContent = 'Xác thực Thiết bị';
+                    msg.textContent = '❌ Mã kích hoạt không chính xác. Vui lòng thử lại!'; 
+                    msg.className = 'key-msg error';
+                }
+            }, 800);
+        }
+
+        document.getElementById('keyInput').addEventListener('keydown', e => {
+            if (e.key === 'Enter') submitKey();
+        });
+
+        // BỘ CHUẨN HÓA TEXT CHỐNG LỖI CHỮ HOA/THƯỜNG KHÔNG ĐỒNG NHẤT
+        function normalizeResult(str) {
+            if (!str) return '---';
+            const s = String(str).toUpperCase().trim();
+            if (s.includes('XIU') || s.includes('XỈU')) return 'XỈU';
+            if (s.includes('TAI') || s.includes('TÀI')) return 'TÀI';
+            return '---';
+        }
+
+        // HÀM GỌI API GIA CỐ: Chống crash chuỗi Proxy và phá cache Render Free
+        async function callAPI() {
+            if (!toolActive || isFetching) return; 
+            isFetching = true;
+            
+            try {
+                // Thêm chuỗi timestamp ngẫu nhiên ép Render luôn trả ra data mới nhất, không nuốt data cũ
+                const targetUrl = API_URLS[currentTable] + '?t=' + Date.now();
+                
+                const res = await fetch(PROXY_URL + encodeURIComponent(targetUrl));
+                if (!res.ok) throw new Error('HTTP_ERROR_' + res.status);
+                
+                const proxyData = await res.json();
+                
+                if (!proxyData || !proxyData.contents) {
+                    throw new Error('PROXY_EMPTY_DATA');
+                }
+
+                // SỬA LỖI CORE NGUYÊN NHÂN SẬP TRÊN RENDER: Làm sạch chuỗi JSON trước khi parse
+                let cleanString = proxyData.contents.trim();
+                
+                // Loại bỏ các ký tự escape hoặc dấu ngoặc bọc ngoài nếu proxy bị lỗi định dạng chuỗi
+                if (cleanString.startsWith('"') && cleanString.endsWith('"')) {
+                    cleanString = cleanString.substring(1, cleanString.length - 1);
+                }
+                // Khử ký tự backslash chống crash vỡ mảng chuỗi dữ liệu
+                cleanString = cleanString.replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+
+                const data = JSON.parse(cleanString);
+                
+                // Tiếp nhận dữ liệu linh hoạt từ cấu trúc API
+                if (data && (data.phien_hien_tai || data.phien)) {
+                    updateUI(data);
+                }
+            } catch(e) {
+                console.warn('Hệ thống đang đồng bộ lại cổng API trên Host Render:', e.message);
+                // Hiển thị trạng thái chờ kết nối thay vì đóng băng màn hình
+                document.getElementById('duDoanText').textContent = 'CONNECT';
+                document.getElementById('duDoanText').style.color = 'var(--ios-orange)';
+                document.getElementById('predCircle').className = 'prediction-circle pulse-connecting';
+                document.getElementById('doTinCayText').textContent = 'Đang kết nối API...';
+            } finally {
+                isFetching = false;
+            }
+        }
+
+        function updateUI(data) {
+            // Linh hoạt bóc tách thuộc tính phòng hờ API đổi tên key viết hoa/thường đột xuất
+            const phienHienTai = data.phien_hien_tai || data.phien || data.PhienHienTai;
+            if (!phienHienTai) return;
+
+            const duDoan = normalizeResult(data.du_doan || data.dudoan || data.predict);
+            const ketQua = normalizeResult(data.ket_qua || data.ketqua || data.result);
+
+            let tyLeRaw = data.ty_le || data.confidence || data.tyle || data.ratio;
+            if (tyLeRaw === undefined || tyLeRaw === null) tyLeRaw = '85%';
+            const doTinCay = typeof tyLeRaw === 'number' ? tyLeRaw + '%' : tyLeRaw;
+
+            document.getElementById('phienText').textContent = '#' + phienHienTai;
+            document.getElementById('duDoanText').textContent = duDoan;
+            
+            const circle = document.getElementById('predCircle');
+            if (duDoan === 'TÀI') {
+                document.getElementById('duDoanText').style.color = 'var(--ios-green)';
+                circle.className = 'prediction-circle pulse-green';
+            } else if (duDoan === 'XỈU') {
+                document.getElementById('duDoanText').style.color = 'var(--ios-red)';
+                circle.className = 'prediction-circle pulse-red';
+            } else {
+                document.getElementById('duDoanText').style.color = 'var(--ios-text-primary)';
+                circle.className = 'prediction-circle';
+            }
+            
+            document.getElementById('doTinCayText').textContent = 'Độ tin cậy: ' + doTinCay;
+
+            // Xử lý tự động cập nhật lịch sử bàn chơi chuẩn xác không lệch phiên
+            const phienKetQua = data.phien || data.last_phien || data.phien_truoc;
+            if (lastPred && phienKetQua && lastPred.phien == phienKetQua) {
+                const exists = history.some(item => item.phien == phienKetQua);
+                if (!exists && ketQua !== '---' && lastPred.duDoan !== '---') {
+                    const isWin = (ketQua === lastPred.duDoan);
+                    history.unshift({
+                        phien: phienKetQua,
+                        ketQua: ketQua,
+                        duDoan: lastPred.duDoan,
+                        isWin: isWin
                     });
-
-                    clearTimeout(timeoutId);
-
-                    if (!response.ok) {
-                        throw new Error(`HTTP_${response.status}`);
-                    }
-
-                    const data = await response.json();
-                    if (data && (data.phien_hien_tai || data.phien)) {
-                        processData(data);
-                    } else {
-                        throw new Error('JSON_INVALID');
-                    }
-
-                } catch (err) {
-                    clearTimeout(timeoutId);
-                    console.error("Lỗi mạng kiểm tra Render:", err);
-
-                    // Xử lý báo lỗi hiển thị thông minh trực quan lên UI
-                    if (err.name === 'AbortError') {
-                        updatePredictionUI('ERR-NET', 'API Hết Hạn Chờ (Timeout)');
-                    } else if (err.message.includes('HTTP_')) {
-                        updatePredictionUI('ERR-NET', 'Phản hồi hệ thống lỗi: ' + err.message);
-                    } else if (err.message === 'JSON_INVALID') {
-                        updatePredictionUI('ERR-NET', 'Cấu trúc dữ liệu sai định dạng');
-                    } else {
-                        // Trường hợp sập do CORS Policy hoặc lỗi kết nối HTTPS của hosting Backend
-                        updatePredictionUI('ERR-CORS', 'Lỗi CORS / Chặn kết nối HTTPS');
-                    }
-                } finally {
-                    isFetching = false;
-                    fetchingIndicator.style.display = 'none';
+                    if (history.length > 10) history.pop();
+                    renderHistory();
                 }
             }
 
-            function processData(data) {
-                const phienHienTai = data.phien_hien_tai || data.phien || data.PhienHienTai;
-                if (!phienHienTai) return;
+            lastPred = { phien: phienHienTai, duDoan: duDoan };
+        }
 
-                const duDoan = normalizeResult(data.du_doan || data.dudoan || data.predict);
-                const ketQua = normalizeResult(data.ket_qua || data.ketqua || data.result);
-                
-                let tyLeRaw = data.ty_le || data.confidence || data.tyle || data.ratio;
-                if (tyLeRaw === undefined || tyLeRaw === null) tyLeRaw = '82%';
-                const doTinCay = typeof tyLeRaw === 'number' ? 'Độ tin cậy: ' + tyLeRaw + '%' : 'Độ tin cậy: ' + tyLeRaw;
-
-                phienText.textContent = '#' + phienHienTai;
-                updatePredictionUI(duDoan, doTinCay);
-                
-                if (duDoan !== '---' && !predictionsMap[phienHienTai]) {
-                    predictionsMap[phienHienTai] = duDoan;
-                }
-
-                const phienKetQua = data.phien || data.last_phien || data.phien_truoc;
-                if (phienKetQua && ketQua !== '---') {
-                    let predicted = data.du_doan_phien_truoc ? normalizeResult(data.du_doan_phien_truoc) : null;
-                    if (!predicted || predicted === '---') {
-                        predicted = predictionsMap[phienKetQua] || null;
-                    }
-
-                    if (predicted && !historyList.some(item => item.phien == phienKetQua)) {
-                        const isWin = (ketQua === predicted);
-                        historyList.unshift({
-                            phien: phienKetQua,
-                            ketQua: ketQua,
-                            duDoan: predicted,
-                            isWin: isWin
-                        });
-                        
-                        if (historyList.length > HISTORY_LIMIT) historyList.pop();
-                        renderHistory();
-                        delete predictionsMap[phienKetQua];
-                    }
-                }
+        function renderHistory() {
+            const tbody = document.getElementById('historyBody');
+            if(history.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="color:var(--ios-text-secondary); font-size:13px; padding:35px 0;">Đang kết nối cổng dữ liệu mới...</td></tr>`;
+                return;
             }
+            tbody.innerHTML = history.map(item => `
+                <tr>
+                    <td style="color: var(--ios-text-secondary);">#${item.phien}</td>
+                    <td style="color:${item.ketQua==='TÀI'?'var(--ios-green)':'var(--ios-red)'}">${item.ketQua}</td>
+                    <td style="color:${item.duDoan==='TÀI'?'var(--ios-green)':'var(--ios-red)'}">${item.duDoan}</td>
+                    <td>
+                        <span class="${item.isWin ? 'status-win' : 'status-lose'}">
+                            <span class="${item.isWin ? 'icon-check' : 'icon-cross'}"></span>
+                            ${item.isWin ? 'HÚP' : 'GÃY'}
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+        }
 
-            function startLoop() {
-                if (intervalId) clearInterval(intervalId);
-                callAPI();                       
-                intervalId = setInterval(callAPI, POLL_INTERVAL);
-            }
+        function startLoop() {
+            if (intervalId) clearInterval(intervalId);
+            callAPI();
+            // Đặt vòng lặp 4.5 giây để tránh làm nghẽn băng thông Render khiến API trả phản hồi 429 (Too Many Requests)
+            intervalId = setInterval(callAPI, 4500); 
+        }
 
-            window.submitKey = function() {
-                const key = keyInput.value.trim();
-                if (!key) {
-                    keyMsg.textContent = 'Mã xác thực không được để trống!';
-                    keyMsg.className = 'key-msg error';
-                    return;
-                }
-                keyBtn.disabled = true;
-                keyBtn.textContent = 'XÁC THỰC LUỒNG MẠNG...';
-                keyMsg.textContent = '';
+        document.getElementById('menuBtn').addEventListener('click', e => {
+            e.stopPropagation();
+            const panel = document.getElementById('menuPanel');
+            panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
+        });
+        
+        document.addEventListener('click', () => {
+            document.getElementById('menuPanel').style.display = 'none';
+        });
 
-                setTimeout(() => {
-                    if (key === MASTER_KEY) {
-                        toolActive = true;
-                        keyMsg.textContent = '✅ Khởi chạy hệ thống hoàn tất!';
-                        keyMsg.className = 'key-msg success';
-                        setTimeout(() => {
-                            keyOverlay.classList.add('hidden');
-                            mainContent.style.display = 'flex';
-                            startLoop();
-                        }, 500);
-                    } else {
-                        toolActive = false;
-                        keyBtn.disabled = false;
-                        keyBtn.textContent = 'KÍCH HOẠT HỆ THỐNG';
-                        keyMsg.textContent = '❌ Mã kích hoạt không chính xác.';
-                        keyMsg.className = 'key-msg error';
-                    }
-                }, 700);
-            };
-
-            menuBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                menuPanel.style.display = menuPanel.style.display === 'flex' ? 'none' : 'flex';
-            });
-            document.addEventListener('click', () => {
-                menuPanel.style.display = 'none';
-            });
-
-            window.switchTable = function(table) {
-                if (currentTable === table) return;
-                currentTable = table;
-                headerTitle.textContent = table === 'md5' ? 'HITCLUB MD5' : 'HITCLUB HŨ';
-                menuPanel.style.display = 'none';
-
-                historyList = [];
-                predictionsMap = {};
-                
-                phienText.textContent = '#-------';
-                updatePredictionUI('---', '--%');
-                renderHistory();
-                startLoop();
-            };
-        })();
+        function switchTable(table) {
+            if (currentTable === table) return;
+            currentTable = table;
+            document.getElementById('headerTitle').textContent = table === 'md5' ? 'HITCLUB MD5' : 'HITCLUB THƯỜNG';
+            document.getElementById('menuPanel').style.display = 'none';
+            
+            history = [];
+            lastPred = null;
+            document.getElementById('phienText').textContent = '#-------';
+            document.getElementById('duDoanText').textContent = '---';
+            document.getElementById('duDoanText').style.color = 'var(--ios-text-primary)';
+            document.getElementById('doTinCayText').textContent = '--%';
+            document.getElementById('predCircle').className = 'prediction-circle';
+            renderHistory();
+            
+            startLoop();
+        }
     </script>
 </body>
 </html>
