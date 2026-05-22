@@ -4,33 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>HITCLUB PREMIUM | DANG VIET</title>
-    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --ios-bg: #010103;
-            --ios-surface: rgba(28, 28, 35, 0.45);
-            --ios-surface-solid: #09090b;
-            --ios-border: rgba(255, 255, 255, 0.06);
-            --ios-accent: #0A84FF;
-            --ios-green: #30D158;
-            --ios-red: #FF453A;
-            --ios-text-primary: #FFFFFF;
-            --ios-text-secondary: rgba(255, 255, 255, 0.45);
-            --ios-glow-green: rgba(48, 209, 88, 0.12);
-            --ios-glow-red: rgba(255, 69, 58, 0.12);
+            --bg: #000000;
+            --surface: rgba(20, 20, 25, 0.7);
+            --surface-solid: #0d0d12;
+            --border: rgba(255, 255, 255, 0.08);
+            --accent: #0A84FF;
+            --green: #30D158;
+            --red: #FF453A;
+            --orange: #FF9500;
+            --text: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.5);
+            --glow-green: 0 0 30px rgba(48, 209, 88, 0.25);
+            --glow-red: 0 0 30px rgba(255, 69, 58, 0.25);
+            --glow-orange: 0 0 20px rgba(255, 149, 0, 0.2);
+            --radius: 28px;
+            --transition: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         body {
-            background: var(--ios-bg);
-            color: var(--ios-text-primary);
+            background: radial-gradient(circle at 50% 0%, rgba(10, 132, 255, 0.08) 0%, transparent 60%),
+                        var(--bg);
+            color: var(--text);
             min-height: 100vh;
             max-width: 430px;
             margin: 0 auto;
@@ -41,244 +46,509 @@
             position: relative;
         }
 
-        body::before {
+        body::after {
             content: '';
             position: absolute;
-            top: -100px; left: -50px; width: 530px; height: 480px;
-            background: radial-gradient(circle, rgba(10, 132, 255, 0.12) 0%, rgba(0,0,0,0) 80%);
+            inset: 0;
+            background: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.02) 0%, transparent 70%);
+            pointer-events: none;
             z-index: -1;
+        }
+
+        #keyOverlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(60px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            transition: opacity 0.5s ease, visibility 0.5s;
+        }
+        #keyOverlay.hidden {
+            opacity: 0;
+            visibility: hidden;
             pointer-events: none;
         }
 
+        .key-card {
+            width: 100%;
+            max-width: 340px;
+            background: rgba(30, 30, 35, 0.6);
+            backdrop-filter: blur(40px);
+            border: 0.5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 36px;
+            padding: 44px 24px;
+            text-align: center;
+            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+        }
+
+        .key-card h2 {
+            font-size: 21px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+        .key-card p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 34px;
+            text-transform: uppercase;
+        }
+
+        .key-input {
+            width: 100%;
+            padding: 18px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 0.5px solid rgba(255, 255, 255, 0.04);
+            color: #fff;
+            font-size: 16px;
+            text-align: center;
+            letter-spacing: 1.2px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        .key-input:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 5px rgba(10, 132, 255, 0.2);
+        }
+
+        .key-btn {
+            margin-top: 28px;
+            padding: 18px;
+            border-radius: 18px;
+            background: var(--accent);
+            color: #fff;
+            font-weight: 600;
+            font-size: 15px;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 8px 20px rgba(10, 132, 255, 0.25);
+        }
+        .key-btn:active {
+            transform: scale(0.96);
+            opacity: 0.85;
+        }
+        .key-msg {
+            margin-top: 18px;
+            font-size: 14px;
+            font-weight: 500;
+            min-height: 20px;
+        }
+        .key-msg.error { color: var(--red); }
+        .key-msg.success { color: var(--green); }
+
         .icon-key {
-            width: 46px; height: 46px; margin: 0 auto 20px;
-            position: relative; background: radial-gradient(circle, rgba(10, 132, 255, 0.2), transparent);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 22px;
+            position: relative;
+            background: radial-gradient(circle, rgba(10, 132, 255, 0.25), transparent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .icon-key::before {
-            content: ''; width: 16px; height: 16px; border: 3.5px solid var(--ios-accent);
-            border-radius: 50%; position: absolute; top: 10px;
+            content: '';
+            width: 17px;
+            height: 17px;
+            border: 3.5px solid var(--accent);
+            border-radius: 50%;
+            position: absolute;
+            top: 10px;
         }
         .icon-key::after {
-            content: ''; width: 4px; height: 16px; background: var(--ios-accent);
-            position: absolute; bottom: 8px; box-shadow: 4px 4px 0 var(--ios-accent);
+            content: '';
+            width: 5px;
+            height: 17px;
+            background: var(--accent);
+            position: absolute;
+            bottom: 7px;
+            box-shadow: 5px 5px 0 var(--accent);
         }
-
         .icon-arrow-left {
-            width: 10px; height: 10px; border-left: 2.5px solid var(--ios-accent);
-            border-bottom: 2.5px solid var(--ios-accent); transform: rotate(45deg);
-            display: inline-block; margin-right: 8px;
+            width: 10px;
+            height: 10px;
+            border-left: 2.5px solid var(--accent);
+            border-bottom: 2.5px solid var(--accent);
+            transform: rotate(45deg);
+            display: inline-block;
+            margin-right: 8px;
         }
-
         .icon-more {
-            display: flex; gap: 3.5px; padding: 12px 6px; cursor: pointer;
+            display: flex;
+            gap: 4px;
+            padding: 12px 6px;
+            cursor: pointer;
         }
         .icon-more span {
-            width: 5px; height: 5px; background: var(--ios-accent); border-radius: 50%;
+            width: 5px;
+            height: 5px;
+            background: var(--accent);
+            border-radius: 50%;
         }
-
         .icon-dice {
-            width: 16px; height: 16px; border: 2px solid #fff; border-radius: 4px;
-            position: relative; display: inline-block; margin-right: 10px;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #fff;
+            border-radius: 4px;
+            position: relative;
+            display: inline-block;
+            margin-right: 12px;
         }
         .icon-dice::before, .icon-dice::after {
-            content: ''; position: absolute; width: 3px; height: 3px; background: #fff; border-radius: 50%;
+            content: '';
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #fff;
+            border-radius: 50%;
         }
-        .icon-dice::before { top: 2px; left: 2px; box-shadow: 7px 7px 0 #fff; }
-        .icon-dice::after { top: 2px; right: 2px; box-shadow: -7px 7px 0 #fff; }
-
+        .icon-dice::before {
+            top: 3px;
+            left: 3px;
+            box-shadow: 8px 8px 0 #fff;
+        }
+        .icon-dice::after {
+            top: 3px;
+            right: 3px;
+            box-shadow: -8px 8px 0 #fff;
+        }
         .icon-diamond {
-            width: 12px; height: 12px; border: 2px solid #fff;
-            transform: rotate(45deg); display: inline-block; margin-right: 12px;
-            position: relative; top: -1px;
+            width: 14px;
+            height: 14px;
+            border: 2px solid #fff;
+            transform: rotate(45deg);
+            display: inline-block;
+            margin-right: 12px;
+            position: relative;
+            top: -2px;
         }
-
         .icon-logout {
-            width: 14px; height: 14px; border: 2px solid var(--ios-red); border-right: none;
-            position: relative; display: inline-block; margin-right: 12px;
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--red);
+            border-right: none;
+            position: relative;
+            display: inline-block;
+            margin-right: 12px;
         }
         .icon-logout::before {
-            content: ''; position: absolute; right: -6px; top: 4px;
-            width: 8px; height: 2px; background: var(--ios-red);
+            content: '';
+            position: absolute;
+            right: -7px;
+            top: 5px;
+            width: 8px;
+            height: 2px;
+            background: var(--red);
         }
         .icon-logout::after {
-            content: ''; position: absolute; right: -6px; top: 1px;
-            width: 5px; height: 5px; border-top: 2px solid var(--ios-red);
-            border-right: 2px solid var(--ios-red); transform: rotate(45deg);
+            content: '';
+            position: absolute;
+            right: -7px;
+            top: 1px;
+            width: 6px;
+            height: 6px;
+            border-top: 2px solid var(--red);
+            border-right: 2px solid var(--red);
+            transform: rotate(45deg);
         }
-
         .icon-check {
-            width: 11px; height: 6px; border-left: 2px solid var(--ios-green);
-            border-bottom: 2px solid var(--ios-green); transform: rotate(-45deg);
-            display: inline-block; margin-right: 6px; position: relative; top: -2px;
+            width: 12px;
+            height: 7px;
+            border-left: 2px solid var(--green);
+            border-bottom: 2px solid var(--green);
+            transform: rotate(-45deg);
+            display: inline-block;
+            margin-right: 7px;
+            position: relative;
+            top: -3px;
         }
-
         .icon-cross {
-            width: 11px; height: 11px; position: relative; display: inline-block; margin-right: 6px; top: 1px;
+            width: 13px;
+            height: 13px;
+            position: relative;
+            display: inline-block;
+            margin-right: 7px;
+            top: 2px;
         }
         .icon-cross::before, .icon-cross::after {
-            content: ''; position: absolute; left: 4.5px; top: 0; width: 2px; height: 11px; background: var(--ios-red);
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 0;
+            width: 2px;
+            height: 13px;
+            background: var(--red);
         }
         .icon-cross::before { transform: rotate(45deg); }
         .icon-cross::after { transform: rotate(-45deg); }
-        
-        #keyOverlay {
-            position: fixed; inset: 0; z-index: 1000;
-            background: rgba(1, 1, 3, 0.95);
-            backdrop-filter: blur(45px);
-            display: flex; align-items: center; justify-content: center;
-            padding: 24px;
-            transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.5s;
+        .icon-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
         }
-        #keyOverlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-        
-        .key-card {
-            width: 100%; max-width: 340px;
-            background: var(--ios-surface);
-            border: 0.5px solid var(--ios-border);
-            border-radius: 32px; padding: 40px 24px;
-            text-align: center;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.06);
-        }
-        .key-card h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 6px; }
-        .key-card p { font-size: 14px; color: var(--ios-text-secondary); margin-bottom: 32px; }
-        
-        .key-input {
-            width: 100%; padding: 18px; border-radius: 16px;
-            background: rgba(255, 255, 255, 0.04); 
-            border: 0.5px solid rgba(255, 255, 255, 0.03);
-            color: #fff; font-size: 17px; text-align: center; letter-spacing: 1px;
-            outline: none; transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-        .key-input:focus {
-            background: rgba(255, 255, 255, 0.07);
-            border-color: var(--ios-accent);
-            box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.18);
-        }
-        
-        .key-btn {
-            margin-top: 24px; padding: 18px; border-radius: 16px;
-            background: var(--ios-accent); color: #fff; font-weight: 600; font-size: 16px;
-            border: none; width: 100%; cursor: pointer; transition: all 0.25s ease;
-            box-shadow: 0 6px 16px rgba(10, 132, 255, 0.2);
-        }
-        .key-btn:active { transform: scale(0.96); opacity: 0.85; }
-        .key-msg { margin-top: 18px; font-size: 13.5px; font-weight: 500; min-height: 20px;}
-        .key-msg.error { color: var(--ios-red); }
-        .key-msg.success { color: var(--ios-green); }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         .header {
-            display: flex; align-items: center; padding: 22px 24px;
-            background: rgba(2, 2, 5, 0.5);
-            backdrop-filter: blur(30px);
-            border-bottom: 0.5px solid var(--ios-border);
-            position: sticky; top: 0; z-index: 100;
+            display: flex;
+            align-items: center;
+            padding: 22px 24px;
+            background: rgba(8, 8, 12, 0.5);
+            backdrop-filter: blur(40px);
+            border-bottom: 0.5px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         .back-btn {
-            color: var(--ios-accent); text-decoration: none;
-            display: flex; align-items: center; font-size: 16px; font-weight: 500;
+            color: var(--accent);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            font-weight: 500;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px 4px;
         }
-        .title { font-size: 17px; font-weight: 600; text-align: center; flex: 1; letter-spacing: -0.3px; }
-        .menu-btn { background: none; border: none; cursor: pointer; }
+        .title {
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            flex: 1;
+            letter-spacing: -0.3px;
+        }
+        .menu-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
 
         .menu-panel {
-            position: fixed; top: 78px; right: 24px; width: 195px;
-            background: rgba(25, 25, 30, 0.97);
-            backdrop-filter: blur(35px);
-            border: 0.5px solid var(--ios-border);
-            border-radius: 24px; padding: 6px 0;
-            display: none; flex-direction: column; z-index: 200;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05);
+            position: fixed;
+            top: 78px;
+            right: 24px;
+            width: 210px;
+            background: rgba(30, 30, 35, 0.95);
+            backdrop-filter: blur(50px);
+            border: 0.5px solid rgba(255, 255, 255, 0.12);
+            border-radius: 24px;
+            padding: 6px 0;
+            display: none;
+            flex-direction: column;
+            z-index: 200;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
         .menu-panel button {
-            background: none; border: none; color: #fff; padding: 15px 18px;
-            text-align: left; font-size: 15px; font-weight: 500; cursor: pointer;
-            display: flex; align-items: center; width: 100%;
-            border-bottom: 0.5px solid rgba(255,255,255,0.03);
+            background: none;
+            border: none;
+            color: #fff;
+            padding: 16px 20px;
+            text-align: left;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            border-bottom: 0.5px solid rgba(255, 255, 255, 0.04);
+            transition: background 0.2s;
         }
-        .menu-panel button:last-child { border-bottom: none; color: var(--ios-red); }
-        .menu-panel button:active { background: rgba(255,255,255,0.08); }
-
+        .menu-panel button:last-child {
+            border-bottom: none;
+            color: var(--red);
+        }
+        .menu-panel button:active {
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
         .main-content {
-            flex: 1; display: flex; flex-direction: column; align-items: center; padding: 36px 24px;
+            flex: 1;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 24px 30px;
         }
 
         .prediction-circle {
-            width: 236px; height: 236px; border-radius: 50%;
-            background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0) 100%);
-            border: 0.5px solid var(--ios-border);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            margin-bottom: 42px; position: relative;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.05);
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        
-        .prediction-circle.pulse-green { 
-            border-color: rgba(48, 209, 88, 0.4); 
-            box-shadow: 0 0 45px var(--ios-glow-green), inset 0 0 22px rgba(48, 209, 88, 0.05);
-        }
-        .prediction-circle.pulse-red { 
-            border-color: rgba(255, 69, 58, 0.4); 
-            box-shadow: 0 0 45px var(--ios-glow-red), inset 0 0 22px rgba(255, 69, 58, 0.05);
-        }
-
-        .session-text { font-size: 11px; font-weight: 600; color: var(--ios-text-secondary); letter-spacing: 2px; margin-bottom: 4px; }
-        .prediction-result { font-size: 56px; font-weight: 800; letter-spacing: -1px; text-shadow: 0 4px 18px rgba(0,0,0,0.5); }
-        .confidence-text { font-size: 15px; font-weight: 600; color: var(--ios-text-secondary); margin-top: 6px; }
-
-        .history-section { width: 100%; margin-top: 14px; }
-        .history-title { font-size: 13px; font-weight: 500; color: var(--ios-text-secondary); letter-spacing: 0.5px; margin-left: 12px; margin-bottom: 12px; text-transform: uppercase;}
-        
-        .history-container {
-            background: var(--ios-surface); border: 0.5px solid var(--ios-border);
-            border-radius: 24px; overflow: hidden; box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.06) 0%, transparent 90%);
+            border: 0.5px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 44px;
+            position: relative;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(255, 255, 255, 0.07);
+            transition: all var(--transition);
             backdrop-filter: blur(20px);
         }
-        .history-table { width: 100%; border-collapse: collapse; }
-        .history-table th {
-            padding: 15px; text-align: center; font-size: 12px; color: var(--ios-text-secondary); font-weight: 600;
-            border-bottom: 0.5px solid var(--ios-border); background: rgba(255, 255, 255, 0.01);
+        .prediction-circle.pulse-green {
+            border-color: rgba(48, 209, 88, 0.6);
+            box-shadow: var(--glow-green);
         }
-        .history-table td { padding: 16px 15px; text-align: center; font-size: 14.5px; font-weight: 500; border-bottom: 0.5px solid rgba(255,255,255,0.03); }
-        .history-table tr:last-child td { border-bottom: none; }
-        
-        .status-win { color: var(--ios-green); font-weight: 600; display: inline-flex; align-items: center; }
-        .status-lose { color: var(--ios-red); font-weight: 600; display: inline-flex; align-items: center; }
+        .prediction-circle.pulse-red {
+            border-color: rgba(255, 69, 58, 0.6);
+            box-shadow: var(--glow-red);
+        }
+        .prediction-circle.pulse-connecting {
+            border-color: rgba(255, 149, 0, 0.5);
+            box-shadow: var(--glow-orange);
+            animation: pulse-connect 1.2s infinite;
+        }
+        @keyframes pulse-connect {
+            0% { box-shadow: 0 0 15px rgba(255, 149, 0, 0.15); }
+            50% { box-shadow: 0 0 35px rgba(255, 149, 0, 0.4); }
+            100% { box-shadow: 0 0 15px rgba(255, 149, 0, 0.15); }
+        }
+
+        .session-text {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+        .prediction-result {
+            font-size: 62px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            text-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+            transition: color 0.3s;
+        }
+        .confidence-text {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+        .fetching-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .history-section {
+            width: 100%;
+            margin-top: 10px;
+        }
+        .history-title {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+            margin-left: 12px;
+            margin-bottom: 14px;
+            text-transform: uppercase;
+        }
+        .history-container {
+            background: var(--surface);
+            border: 0.5px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(30px);
+        }
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .history-table th {
+            padding: 15px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            border-bottom: 0.5px solid var(--border);
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .history-table td {
+            padding: 16px 15px;
+            text-align: center;
+            font-size: 14.5px;
+            font-weight: 500;
+            border-bottom: 0.5px solid rgba(255, 255, 255, 0.04);
+        }
+        .history-table tr:last-child td {
+            border-bottom: none;
+        }
+        .status-win {
+            color: var(--green);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+        }
+        .status-lose {
+            color: var(--red);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
 
+    <!-- KEY OVERLAY -->
     <div id="keyOverlay">
         <div class="key-card">
             <div class="icon-key"></div>
             <h2>HITCLUB - PHANMEMTOOOL.FUN</h2>
-            <p>VUI LÒNG NHẬP KEY ĐỂ KÍCH HOẠT TOOL</p>
-            <input type="text" id="keyInput" class="key-input" placeholder="Nhập key vào đây..." maxlength="24" autocomplete="off">
+            <p>Vui lòng nhập key để kích hoạt</p>
+            <input type="text" id="keyInput" class="key-input" placeholder="Nhập mã bản quyền..." maxlength="24" autocomplete="off" onkeydown="if(event.key==='Enter')submitKey()">
             <button id="keyBtn" class="key-btn" onclick="submitKey()">KÍCH HOẠT TOOL</button>
             <div id="keyMsg" class="key-msg"></div>
         </div>
     </div>
 
+    <!-- HEADER -->
     <header class="header">
-        <a href="#" class="back-btn" onclick="location.reload()"><span class="icon-arrow-left"></span> Trở lại</a>
+        <button class="back-btn" onclick="location.reload()">
+            <span class="icon-arrow-left"></span> Trở lại
+        </button>
         <div class="title" id="headerTitle">HITCLUB MD5</div>
         <button class="menu-btn" id="menuBtn">
             <div class="icon-more"><span></span><span></span><span></span></div>
         </button>
     </header>
 
+    <!-- MENU PANEL -->
     <div class="menu-panel" id="menuPanel">
         <button onclick="switchTable('md5')"><span class="icon-dice"></span> Bàn MD5</button>
         <button onclick="switchTable('tx')"><span class="icon-diamond"></span> Bàn Thường</button>
         <button onclick="location.reload()"><span class="icon-logout"></span> Đăng xuất</button>
     </div>
 
-    <div class="main-content" id="mainContent" style="display:none;">
+    <!-- MAIN CONTENT -->
+    <div class="main-content" id="mainContent">
         <div class="prediction-circle" id="predCircle">
             <div class="session-text">PHIÊN PHÂN TÍCH</div>
-            <div style="font-size:15px; font-weight:700; color:var(--ios-accent); margin-bottom:2px;" id="phienText">#-------</div>
+            <div style="font-size:16px; font-weight:700; color:var(--accent); margin-bottom:4px;" id="phienText">#-------</div>
             <div class="prediction-result" id="duDoanText">---</div>
             <div class="confidence-text" id="doTinCayText">--%</div>
+            <div class="fetching-indicator" id="fetchingIndicator" style="display:none;">
+                <span class="icon-spinner"></span> ĐANG CẬP NHẬT...
+            </div>
         </div>
 
         <div class="history-section">
@@ -295,7 +565,7 @@
                     </thead>
                     <tbody id="historyBody">
                         <tr>
-                            <td colspan="4" style="color:var(--ios-text-secondary); font-size:13px; padding:35px 0;">Đang thiết lập luồng dữ liệu...</td>
+                            <td colspan="4" style="color:var(--text-secondary); font-size:13px; padding:35px 0;">Đang thiết lập luồng dữ liệu...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -304,148 +574,202 @@
     </div>
 
     <script>
-        let toolActive = false; 
-        let currentTable = 'md5'; 
-        let historyList = []; 
-        let lastPred = null; 
-        let intervalId = null;
-        let isFetching = false; 
-
         const MASTER_KEY = "HITCLUB_DANG_VIET";
-        
         const API_URLS = {
             md5: 'https://hitclub-edyt.onrender.com/taixiumd5',
             tx: 'https://hitclub-edyt.onrender.com/taixiu'
         };
+        const HISTORY_LIMIT = 8;
+        const FETCH_TIMEOUT = 12000;
+        const RETRY_DELAY = 4000;
+        let toolActive = false;
+        let currentTable = 'md5';
+        let historyList = [];
+        let predictionsMap = {};
+        let lastPred = null;
+        let intervalId = null;
+        let isFetching = false;
+        let fetchFailCount = 0;
 
+        const keyOverlay = document.getElementById('keyOverlay');
+        const keyInput = document.getElementById('keyInput');
+        const keyBtn = document.getElementById('keyBtn');
+        const keyMsg = document.getElementById('keyMsg');
+        const mainContent = document.getElementById('mainContent');
+        const headerTitle = document.getElementById('headerTitle');
+        const menuBtn = document.getElementById('menuBtn');
+        const menuPanel = document.getElementById('menuPanel');
+        const predCircle = document.getElementById('predCircle');
+        const phienText = document.getElementById('phienText');
+        const duDoanText = document.getElementById('duDoanText');
+        const doTinCayText = document.getElementById('doTinCayText');
+        const fetchingIndicator = document.getElementById('fetchingIndicator');
+        const historyBody = document.getElementById('historyBody');
+        
         function submitKey() {
-            const input = document.getElementById('keyInput');
-            const btn = document.getElementById('keyBtn');
-            const msg = document.getElementById('keyMsg');
-            const key = input.value.trim();
-
-            if (key.length === 0) {
-                msg.textContent = 'Vui lòng nhập mã bản quyền!'; 
-                msg.className = 'key-msg error'; 
+            const key = keyInput.value.trim();
+            if (!key) {
+                keyMsg.textContent = 'Vui lòng nhập key bản quyền!';
+                keyMsg.className = 'key-msg error';
                 return;
             }
 
-            btn.disabled = true; 
-            btn.textContent = 'Đang xác thực hệ thống...';
-            msg.textContent = '';
+            keyBtn.disabled = true;
+            keyBtn.textContent = 'ĐANG CẬP NHẬT...';
+            keyMsg.textContent = '';
 
             setTimeout(() => {
                 if (key === MASTER_KEY) {
-                    toolActive = true; 
-                    msg.textContent = '✅ Thiết bị xác thực thành công! Đang chuyển hướng...'; 
-                    msg.className = 'key-msg success';
-                    
+                    toolActive = true;
+                    keyMsg.textContent = '✅ Thiết bị xác thực thành công!';
+                    keyMsg.className = 'key-msg success';
+
                     setTimeout(() => {
-                        document.getElementById('keyOverlay').classList.add('hidden');
-                        document.getElementById('mainContent').style.display = '';
-                        startLoop(); 
-                    }, 700);
+                        keyOverlay.classList.add('hidden');
+                        mainContent.style.display = 'flex';
+                        startLoop();
+                    }, 500);
                 } else {
                     toolActive = false;
-                    btn.disabled = false;
-                    btn.textContent = 'Xác thực Thiết bị';
-                    msg.textContent = '❌ key kích hoạt không chính xác. Vui lòng thử lại!'; 
-                    msg.className = 'key-msg error';
+                    keyBtn.disabled = false;
+                    keyBtn.textContent = 'KÍCH HOẠT TOOL';
+                    keyMsg.textContent = '❌ Key kích hoạt không chính xác.';
+                    keyMsg.className = 'key-msg error';
                 }
             }, 800);
         }
 
-        document.getElementById('keyInput').addEventListener('keydown', e => {
-            if (e.key === 'Enter') submitKey();
-        });
-
         async function callAPI() {
-            if (!toolActive || isFetching) return; 
-            
+            if (!toolActive || isFetching) return;
             isFetching = true;
+            fetchingIndicator.style.display = 'flex';
+
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
+
             try {
-                const targetUrl = API_URLS[currentTable];
-                const antiCacheToken = '?nocache=' + new Date().getTime();
-                
-                const response = await fetch(targetUrl + antiCacheToken, {
+                const targetUrl = API_URLS[currentTable] + '?nocache=' + Date.now();
+                const response = await fetch(targetUrl, {
                     method: 'GET',
                     mode: 'cors',
+                    signal: controller.signal,
                     headers: {
-                        'Cache-Control': 'no-cache, no-store, must-revalidate',
+                        'Cache-Control': 'no-cache',
                         'Pragma': 'no-cache'
                     }
                 });
-                
-                if (!response.ok) throw new Error('HTTP ' + response.status);
+
+                clearTimeout(timeoutId);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const data = await response.json();
-                
+
                 if (data && data.phien_hien_tai) {
                     processEngineData(data);
+                    fetchFailCount = 0; // reset
+                } else {
+                    throw new Error('Dữ liệu không hợp lệ');
                 }
-            } catch(e) {
-                console.error('Đang kết nối lại mạng lõi API...', e);
+            } catch (err) {
+                clearTimeout(timeoutId);
+                console.warn('Lỗi kết nối:', err.message);
+                fetchFailCount++;
+
+                duDoanText.textContent = 'CONNECT';
+                duDoanText.style.color = 'var(--orange)';
+                predCircle.className = 'prediction-circle pulse-connecting';
+                doTinCayText.textContent = 'Đang thử lại...';
+
+                if (fetchFailCount >= 3) {
+                    clearInterval(intervalId);
+                    intervalId = null;
+                    setTimeout(() => {
+                        if (toolActive) startLoop();
+                    }, RETRY_DELAY);
+                }
             } finally {
-                isFetching = false; 
+                isFetching = false;
+                fetchingIndicator.style.display = 'none';
             }
+        }
+
+        function normalizeResult(str) {
+            if (!str) return '---';
+            const s = str.toUpperCase();
+            if (s.includes('XIU') || s.includes('XỈU')) return 'XỈU';
+            if (s.includes('TAI') || s.includes('TÀI')) return 'TÀI';
+            return '---';
         }
 
         function processEngineData(data) {
-            let duDoanRaw = (data.du_doan || '---').toUpperCase();
-            let duDoan = (duDoanRaw === 'XIU' || duDoanRaw === 'XỈU') ? 'XỈU' : (duDoanRaw === 'TAI' || duDoanRaw === 'TÀI') ? 'TÀI' : '---'; 
-            
-            let ketQuaRaw = (data.ket_qua || '---').toUpperCase();
-            let ketQua = (ketQuaRaw === 'XIU' || ketQuaRaw === 'XỈU') ? 'XỈU' : (ketQuaRaw === 'TAI' || ketQuaRaw === 'TÀI') ? 'TÀI' : '---';
+            const phienHienTai = data.phien_hien_tai;
+            const duDoanRaw = data.du_doan || '---';
+            const ketQuaRaw = data.ket_qua || '---';
+            const tyLeRaw = currentTable === 'md5' ? data.ty_le : data.confidence;
+            let doTinCay = tyLeRaw ? (typeof tyLeRaw === 'number' ? tyLeRaw + '%' : tyLeRaw) : '--%';
 
-            let doTinCay = currentTable === 'md5' ? (data.ty_le || '--%') : (data.confidence || '--%');
+            const duDoan = normalizeResult(duDoanRaw);
+            const ketQua = normalizeResult(ketQuaRaw);
 
-            document.getElementById('phienText').textContent = '#' + data.phien_hien_tai;
-            document.getElementById('duDoanText').textContent = duDoan;
-            
-            const circle = document.getElementById('predCircle');
+            phienText.textContent = '#' + phienHienTai;
+            duDoanText.textContent = duDoan;
+
             if (duDoan === 'TÀI') {
-                document.getElementById('duDoanText').style.color = 'var(--ios-green)';
-                circle.className = 'prediction-circle pulse-green';
+                duDoanText.style.color = 'var(--green)';
+                predCircle.className = 'prediction-circle pulse-green';
             } else if (duDoan === 'XỈU') {
-                document.getElementById('duDoanText').style.color = 'var(--ios-red)';
-                circle.className = 'prediction-circle pulse-red';
+                duDoanText.style.color = 'var(--red)';
+                predCircle.className = 'prediction-circle pulse-red';
             } else {
-                document.getElementById('duDoanText').style.color = 'var(--ios-text-primary)';
-                circle.className = 'prediction-circle';
+                duDoanText.style.color = 'var(--text)';
+                predCircle.className = 'prediction-circle';
             }
-            
-            document.getElementById('doTinCayText').textContent = 'Độ tin cậy: ' + doTinCay;
 
-            let phienXetDuyet = data.phien || data.last_phien;
+            doTinCayText.textContent = 'Độ tin cậy: ' + doTinCay;
             
-            if (lastPred && phienXetDuyet && parseInt(lastPred.phien) === parseInt(phienXetDuyet) && ketQua !== '---') {
-                const isDuplicated = historyList.some(item => parseInt(item.phien) === parseInt(phienXetDuyet));
-                if (!isDuplicated) {
-                    const isWin = (ketQua === lastPred.duDoan);
-                    historyList.unshift({
-                        phien: phienXetDuyet,
-                        ketQua: ketQua,
-                        duDoan: lastPred.duDoan,
-                        isWin: isWin
-                    });
-                    if (historyList.length > 10) historyList.pop();
-                    renderHistory();
+            if (duDoan !== '---') {
+                predictionsMap[phienHienTai] = duDoan;
+                const keys = Object.keys(predictionsMap);
+                if (keys.length > 20) {
+                    const oldestKey = keys.sort((a,b) => a - b)[0];
+                    delete predictionsMap[oldestKey];
                 }
             }
 
-            lastPred = { phien: data.phien_hien_tai, duDoan: duDoan };
+            let phienKetQua = data.phien || data.last_phien;
+            if (phienKetQua && ketQua !== '---') {
+                let targetDuDoan = data.du_doan_phien_truoc ? normalizeResult(data.du_doan_phien_truoc) : null;
+                if (!targetDuDoan || targetDuDoan === '---') {
+                    targetDuDoan = predictionsMap[phienKetQua] || null;
+                }
+
+                if (targetDuDoan && !historyList.some(item => parseInt(item.phien) === parseInt(phienKetQua))) {
+                    const isWin = (ketQua === targetDuDoan);
+                    historyList.unshift({
+                        phien: phienKetQua,
+                        ketQua: ketQua,
+                        duDoan: targetDuDoan,
+                        isWin: isWin
+                    });
+                    if (historyList.length > HISTORY_LIMIT) historyList.pop();
+                    renderHistory();
+
+                    delete predictionsMap[phienKetQua];
+                }
+            }
+
+            lastPred = { phien: phienHienTai, duDoan: duDoan };
         }
 
         function renderHistory() {
-            const tbody = document.getElementById('historyBody');
             if (historyList.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" style="color:var(--ios-text-secondary); font-size:13px; padding:35px 0;">Đang chờ dữ liệu phiên tiếp theo...</td></tr>`;
+                historyBody.innerHTML = `<tr><td colspan="4" style="color:var(--text-secondary); font-size:13px; padding:35px 0;">Đang chờ dữ liệu phiên tiếp theo...</td></tr>`;
                 return;
             }
-            tbody.innerHTML = historyList.map(item => `
+            historyBody.innerHTML = historyList.map(item => `
                 <tr>
-                    <td style="color: var(--ios-text-secondary);">#${item.phien}</td>
-                    <td style="color:${item.ketQua === 'TÀI' ? 'var(--ios-green)' : 'var(--ios-red)'}">${item.ketQua}</td>
-                    <td style="color:${item.duDoan === 'TÀI' ? 'var(--ios-green)' : 'var(--ios-red)'}">${item.duDoan}</td>
+                    <td style="color: var(--text-secondary);">#${item.phien}</td>
+                    <td style="color:${item.ketQua === 'TÀI' ? 'var(--green)' : 'var(--red)'}">${item.ketQua}</td>
+                    <td style="color:${item.duDoan === 'TÀI' ? 'var(--green)' : 'var(--red)'}">${item.duDoan}</td>
                     <td>
                         <span class="${item.isWin ? 'status-win' : 'status-lose'}">
                             <span class="${item.isWin ? 'icon-check' : 'icon-cross'}"></span>
@@ -459,33 +783,35 @@
         function startLoop() {
             if (intervalId) clearInterval(intervalId);
             callAPI();
-            intervalId = setInterval(callAPI, 2000);
+            intervalId = setInterval(callAPI, 10000);
         }
 
-        document.getElementById('menuBtn').addEventListener('click', e => {
+        menuBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            const panel = document.getElementById('menuPanel');
-            panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
+            menuPanel.style.display = menuPanel.style.display === 'flex' ? 'none' : 'flex';
         });
-        
+
         document.addEventListener('click', () => {
-            document.getElementById('menuPanel').style.display = 'none';
+            menuPanel.style.display = 'none';
         });
 
         function switchTable(table) {
             currentTable = table;
-            document.getElementById('headerTitle').textContent = table === 'md5' ? 'HITCLUB MD5' : 'HITCLUB THƯỜNG';
-            document.getElementById('menuPanel').style.display = 'none';
-            
+            headerTitle.textContent = table === 'md5' ? 'HITCLUB MD5' : 'HITCLUB HŨ';
+            menuPanel.style.display = 'none';
+
             historyList = [];
+            predictionsMap = {};
             lastPred = null;
-            document.getElementById('phienText').textContent = '#-------';
-            document.getElementById('duDoanText').textContent = '---';
-            document.getElementById('duDoanText').style.color = 'var(--ios-text-primary)';
-            document.getElementById('doTinCayText').textContent = '--%';
-            document.getElementById('predCircle').className = 'prediction-circle';
+            fetchFailCount = 0;
+
+            phienText.textContent = '#-------';
+            duDoanText.textContent = '---';
+            duDoanText.style.color = 'var(--text)';
+            doTinCayText.textContent = '--%';
+            predCircle.className = 'prediction-circle';
             renderHistory();
-            
+
             startLoop();
         }
     </script>
