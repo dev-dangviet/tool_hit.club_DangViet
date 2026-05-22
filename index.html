@@ -155,7 +155,7 @@
         .main-content {
             flex: 1; display: flex; flex-direction: column; align-items: center; padding: 32px 24px;
         }
-        
+
         .prediction-circle {
             width: 230px; height: 230px; border-radius: 50%;
             background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%);
@@ -200,19 +200,17 @@
 </head>
 <body>
 
-    <!-- PHẦN NHẬP KEY -->
     <div id="keyOverlay">
         <div class="key-card">
             <div class="icon-key"></div>
-            <h2>HITCLUB</h2>
-            <p>NHẬP KEY ĐỂ KÍCH HOẠT TOOL</p>
-            <input type="text" id="keyInput" class="key-input" placeholder="Nhập key tại đây..." maxlength="24" autocomplete="off">
-            <button id="keyBtn" class="key-btn" onclick="submitKey()">Xác thực Thiết bị</button>
+            <h2>HITCLUB - PMT</h2>
+            <p>VUI LÒNG NHẬP KEY ĐỂ KÍCH HOẠT TOOL</p>
+            <input type="text" id="keyInput" class="key-input" placeholder="Nhập key vào đây..." maxlength="24" autocomplete="off">
+            <button id="keyBtn" class="key-btn" onclick="submitKey()">KÍCH HOẠT TOOL</button>
             <div id="keyMsg" class="key-msg"></div>
         </div>
     </div>
 
-    <!-- HEADER -->
     <header class="header">
         <a href="#" class="back-btn" onclick="location.reload()"><span class="icon-arrow-left"></span> Trở lại</a>
         <div class="title" id="headerTitle">HITCLUB MD5</div>
@@ -221,14 +219,12 @@
         </button>
     </header>
 
-    <!-- MENU -->
     <div class="menu-panel" id="menuPanel">
         <button onclick="switchTable('md5')">🎲 Bàn MD5</button>
         <button onclick="switchTable('tx')">💎 Bàn Thường</button>
         <button onclick="location.reload()">🚪 Đăng xuất</button>
     </div>
 
-    <!-- PHÂN HIỆN KẾT QUẢ-->
     <div class="main-content" id="mainContent" style="display:none;">
         <div class="prediction-circle" id="predCircle">
             <div class="session-text">PHIÊN PHÂN TÍCH</div>
@@ -238,7 +234,7 @@
         </div>
 
         <div class="history-section">
-            <div class="history-title">Lịch sử phân tích 10 phiên gần đây</div>
+            <div class="history-title">Lịch sử phân tích hệ thống</div>
             <div class="history-container">
                 <table class="history-table">
                     <thead>
@@ -259,7 +255,7 @@
         </div>
     </div>
 
-<script>
+    <script>
         let toolActive = false; 
         let currentTable = 'md5'; 
         let history = []; 
@@ -273,6 +269,8 @@
             tx: 'https://hitclub-edyt.onrender.com/taixiu'
         };
 
+        const PROXY_URL = 'https://api.allorigins.win/get?url=';
+
         function submitKey() {
             const input = document.getElementById('keyInput');
             const btn = document.getElementById('keyBtn');
@@ -280,7 +278,7 @@
             const key = input.value.trim();
 
             if (key.length === 0) {
-                msg.textContent = 'Vui lòng nhập mã bản quyền!'; 
+                msg.textContent = 'Vui lòng nhập key!'; 
                 msg.className = 'key-msg error'; 
                 return;
             }
@@ -319,9 +317,11 @@
             
             try {
                 const targetUrl = API_URLS[currentTable];
-                const res = await fetch(targetUrl);
+                const res = await fetch(PROXY_URL + encodeURIComponent(targetUrl));
                 if (!res.ok) throw new Error('HTTP ' + res.status);
-                const data = await res.json();
+                
+                const proxyData = await res.json();
+                const data = JSON.parse(proxyData.contents);
                 
                 if (data && data.phien_hien_tai) {
                     updateUI(data);
@@ -423,7 +423,6 @@
             
             startLoop();
         }
-</script>
-
+    </script>
 </body>
 </html>
