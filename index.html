@@ -519,7 +519,6 @@
 </head>
 <body>
 
-    <!-- KEY OVERLAY -->
     <div id="keyOverlay">
         <div class="key-card">
             <div class="icon-key"><span class="key-notch"></span></div>
@@ -531,7 +530,6 @@
         </div>
     </div>
 
-    <!-- HEADER -->
     <header class="header">
         <button class="back-btn" onclick="location.reload()">
             <span class="icon-arrow-left"></span> Trở lại
@@ -542,14 +540,12 @@
         </button>
     </header>
 
-    <!-- MENU PANEL -->
     <div class="menu-panel" id="menuPanel">
         <button onclick="switchTable('md5')"><span class="icon-dice"></span> Bàn MD5</button>
         <button onclick="switchTable('tx')"><span class="icon-diamond"></span> Bàn Thường</button>
         <button onclick="location.reload()"><span class="icon-logout"></span> Đăng xuất</button>
     </div>
 
-    <!-- MAIN CONTENT -->
     <div class="main-content" id="mainContent">
         <div class="prediction-circle" id="predCircle">
             <div class="session-text">PHIÊN PHÂN TÍCH</div>
@@ -592,8 +588,8 @@
             };
             const HISTORY_LIMIT = 8;
             const FETCH_TIMEOUT = 15000; 
-            const RETRY_DELAY = 5000; 
-            const POLL_INTERVAL = 5000;
+            const RETRY_DELAY = 4000; 
+            const POLL_INTERVAL = 3000;
 
             let toolActive = false;
             let currentTable = 'md5';
@@ -677,13 +673,16 @@
                         mode: 'cors',
                         signal: controller.signal,
                         headers: {
-                            'Cache-Control': 'no-cache',
+                            'Cache-Control': 'no-cache, no-store, must-revalidate',
                             'Pragma': 'no-cache'
                         }
                     });
 
                     clearTimeout(timeoutId);
-                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
 
                     let data;
                     const contentType = response.headers.get('content-type');
@@ -706,15 +705,14 @@
                     }
                 } catch (err) {
                     clearTimeout(timeoutId);
-                    console.warn('⚠️ Lỗi fetch:', err.message);
                     fetchFailCount++;
 
-                    duDoanText.textContent = 'ERROR';
+                    duDoanText.textContent = 'CONNECT';
                     duDoanText.style.color = 'var(--orange)';
                     predCircle.className = 'prediction-circle pulse-connecting';
-                    doTinCayText.textContent = 'Đang thử lại...';
+                    doTinCayText.textContent = 'Đang kết nối lại API...';
 
-                        if (fetchFailCount >= 3) {
+                    if (fetchFailCount >= 2) {
                         clearInterval(intervalId);
                         intervalId = null;
                         setTimeout(() => {
@@ -736,11 +734,11 @@
 
                 phienText.textContent = '#' + phienHienTai;
                 updatePredictionUI(duDoan, doTinCay);
+                
                 if (duDoan !== '---' && !predictionsMap[phienHienTai]) {
                     predictionsMap[phienHienTai] = duDoan;
-                    // Giới hạn map 20 phần tử
                     const keys = Object.keys(predictionsMap);
-                    if (keys.length > 20) {
+                    if (keys.length > 30) {
                         const oldest = keys.sort((a,b) => a - b)[0];
                         delete predictionsMap[oldest];
                     }
@@ -763,7 +761,6 @@
                         });
                         if (historyList.length > HISTORY_LIMIT) historyList.pop();
                         renderHistory();
-
                         delete predictionsMap[phienKetQua];
                     }
                 }
@@ -819,7 +816,6 @@
                 headerTitle.textContent = table === 'md5' ? 'HITCLUB MD5' : 'HITCLUB HŨ';
                 menuPanel.style.display = 'none';
 
-                // Reset state
                 historyList = [];
                 predictionsMap = {};
                 fetchFailCount = 0;
