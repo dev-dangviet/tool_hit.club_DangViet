@@ -9,7 +9,6 @@
         :root {
             --bg: #000000;
             --surface: rgba(20, 20, 25, 0.7);
-            --surface-solid: #0d0d12;
             --border: rgba(255, 255, 255, 0.08);
             --accent: #0A84FF;
             --green: #30D158;
@@ -33,8 +32,7 @@
         }
 
         body {
-            background: radial-gradient(circle at 50% 0%, rgba(10, 132, 255, 0.08) 0%, transparent 60%),
-                        var(--bg);
+            background: radial-gradient(circle at 50% 0%, rgba(10, 132, 255, 0.08) 0%, transparent 60%), var(--bg);
             color: var(--text);
             min-height: 100vh;
             max-width: 430px;
@@ -54,7 +52,7 @@
             pointer-events: none;
             z-index: -1;
         }
-
+        
         #keyOverlay {
             position: fixed;
             inset: 0;
@@ -84,7 +82,6 @@
             text-align: center;
             box-shadow: 0 50px 100px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.07);
         }
-
         .key-card h2 {
             font-size: 21px;
             font-weight: 700;
@@ -97,7 +94,6 @@
             margin-bottom: 34px;
             text-transform: uppercase;
         }
-
         .key-input {
             width: 100%;
             padding: 18px;
@@ -116,7 +112,6 @@
             border-color: var(--accent);
             box-shadow: 0 0 0 5px rgba(10, 132, 255, 0.2);
         }
-
         .key-btn {
             margin-top: 28px;
             padding: 18px;
@@ -145,11 +140,11 @@
         .key-msg.success { color: var(--green); }
 
         .icon-key {
-            width: 48px;
-            height: 48px;
-            margin: 0 auto 22px;
+            width: 52px;
+            height: 52px;
+            margin: 0 auto 24px;
             position: relative;
-            background: radial-gradient(circle, rgba(10, 132, 255, 0.25), transparent);
+            background: radial-gradient(circle at 30% 30%, rgba(10, 132, 255, 0.3), transparent 70%);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -157,22 +152,37 @@
         }
         .icon-key::before {
             content: '';
-            width: 17px;
-            height: 17px;
-            border: 3.5px solid var(--accent);
+            width: 18px;
+            height: 18px;
+            border: 3px solid var(--accent);
             border-radius: 50%;
             position: absolute;
-            top: 10px;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
         }
         .icon-key::after {
             content: '';
-            width: 5px;
-            height: 17px;
-            background: var(--accent);
             position: absolute;
-            bottom: 7px;
-            box-shadow: 5px 5px 0 var(--accent);
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 2px 2px 6px 6px;
+            box-shadow: 6px 6px 0 var(--accent), -6px 6px 0 var(--accent);
         }
+        .key-notch {
+            position: absolute;
+            bottom: 4px;
+            left: calc(50% + 4px);
+            width: 5px;
+            height: 5px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
         .icon-arrow-left {
             width: 10px;
             height: 10px;
@@ -375,7 +385,7 @@
         .menu-panel button:active {
             background: rgba(255, 255, 255, 0.08);
         }
-        
+
         .main-content {
             flex: 1;
             display: none;
@@ -448,7 +458,7 @@
             color: var(--text-secondary);
             font-size: 13px;
         }
-
+        
         .history-section {
             width: 100%;
             margin-top: 10px;
@@ -512,7 +522,7 @@
     <!-- KEY OVERLAY -->
     <div id="keyOverlay">
         <div class="key-card">
-            <div class="icon-key"></div>
+            <div class="icon-key"><span class="key-notch"></span></div>
             <h2>HITCLUB - PHANMEMTOOOL.FUN</h2>
             <p>Vui lòng nhập key để kích hoạt</p>
             <input type="text" id="keyInput" class="key-input" placeholder="Nhập mã bản quyền..." maxlength="24" autocomplete="off" onkeydown="if(event.key==='Enter')submitKey()">
@@ -574,246 +584,252 @@
     </div>
 
     <script>
-        const MASTER_KEY = "HITCLUB_DANG_VIET";
-        const API_URLS = {
-            md5: 'https://hitclub-edyt.onrender.com/taixiumd5',
-            tx: 'https://hitclub-edyt.onrender.com/taixiu'
-        };
-        const HISTORY_LIMIT = 8;
-        const FETCH_TIMEOUT = 12000;
-        const RETRY_DELAY = 4000;
-        let toolActive = false;
-        let currentTable = 'md5';
-        let historyList = [];
-        let predictionsMap = {};
-        let lastPred = null;
-        let intervalId = null;
-        let isFetching = false;
-        let fetchFailCount = 0;
+        (function() {
+            const MASTER_KEY = "HITCLUB_DANG_VIET";
+            const API_URLS = {
+                md5: 'https://hitclub-edyt.onrender.com/taixiumd5',
+                tx: 'https://hitclub-edyt.onrender.com/taixiu'
+            };
+            const HISTORY_LIMIT = 8;
+            const FETCH_TIMEOUT = 15000; 
+            const RETRY_DELAY = 5000; 
+            const POLL_INTERVAL = 5000;
 
-        const keyOverlay = document.getElementById('keyOverlay');
-        const keyInput = document.getElementById('keyInput');
-        const keyBtn = document.getElementById('keyBtn');
-        const keyMsg = document.getElementById('keyMsg');
-        const mainContent = document.getElementById('mainContent');
-        const headerTitle = document.getElementById('headerTitle');
-        const menuBtn = document.getElementById('menuBtn');
-        const menuPanel = document.getElementById('menuPanel');
-        const predCircle = document.getElementById('predCircle');
-        const phienText = document.getElementById('phienText');
-        const duDoanText = document.getElementById('duDoanText');
-        const doTinCayText = document.getElementById('doTinCayText');
-        const fetchingIndicator = document.getElementById('fetchingIndicator');
-        const historyBody = document.getElementById('historyBody');
-        
-        function submitKey() {
-            const key = keyInput.value.trim();
-            if (!key) {
-                keyMsg.textContent = 'Vui lòng nhập key bản quyền!';
-                keyMsg.className = 'key-msg error';
-                return;
+            let toolActive = false;
+            let currentTable = 'md5';
+            let historyList = []; 
+            let predictionsMap = {}; 
+            let intervalId = null;
+            let isFetching = false;
+            let fetchFailCount = 0;
+
+            const $ = (id) => document.getElementById(id);
+            const keyOverlay = $('keyOverlay');
+            const keyInput = $('keyInput');
+            const keyBtn = $('keyBtn');
+            const keyMsg = $('keyMsg');
+            const mainContent = $('mainContent');
+            const headerTitle = $('headerTitle');
+            const menuBtn = $('menuBtn');
+            const menuPanel = $('menuPanel');
+            const predCircle = $('predCircle');
+            const phienText = $('phienText');
+            const duDoanText = $('duDoanText');
+            const doTinCayText = $('doTinCayText');
+            const fetchingIndicator = $('fetchingIndicator');
+            const historyBody = $('historyBody');
+
+            function normalizeResult(str) {
+                if (!str) return '---';
+                const s = str.toUpperCase();
+                if (s.includes('XIU') || s.includes('XỈU')) return 'XỈU';
+                if (s.includes('TAI') || s.includes('TÀI')) return 'TÀI';
+                return '---';
             }
 
-            keyBtn.disabled = true;
-            keyBtn.textContent = 'ĐANG CẬP NHẬT...';
-            keyMsg.textContent = '';
+            function renderHistory() {
+                if (historyList.length === 0) {
+                    historyBody.innerHTML = '<tr><td colspan="4" style="color:var(--text-secondary); font-size:13px; padding:35px 0;">Đang chờ dữ liệu phiên tiếp theo...</td></tr>';
+                    return;
+                }
+                historyBody.innerHTML = historyList.map(item => `
+                    <tr>
+                        <td style="color: var(--text-secondary);">#${item.phien}</td>
+                        <td style="color:${item.ketQua === 'TÀI' ? 'var(--green)' : 'var(--red)'}">${item.ketQua}</td>
+                        <td style="color:${item.duDoan === 'TÀI' ? 'var(--green)' : 'var(--red)'}">${item.duDoan}</td>
+                        <td>
+                            <span class="${item.isWin ? 'status-win' : 'status-lose'}">
+                                <span class="${item.isWin ? 'icon-check' : 'icon-cross'}"></span>
+                                ${item.isWin ? 'HÚP' : 'GÃY'}
+                            </span>
+                        </td>
+                    </tr>
+                `).join('');
+            }
 
-            setTimeout(() => {
-                if (key === MASTER_KEY) {
-                    toolActive = true;
-                    keyMsg.textContent = '✅ Thiết bị xác thực thành công!';
-                    keyMsg.className = 'key-msg success';
-
-                    setTimeout(() => {
-                        keyOverlay.classList.add('hidden');
-                        mainContent.style.display = 'flex';
-                        startLoop();
-                    }, 500);
+            function updatePredictionUI(duDoan, doTinCay) {
+                duDoanText.textContent = duDoan;
+                if (duDoan === 'TÀI') {
+                    duDoanText.style.color = 'var(--green)';
+                    predCircle.className = 'prediction-circle pulse-green';
+                } else if (duDoan === 'XỈU') {
+                    duDoanText.style.color = 'var(--red)';
+                    predCircle.className = 'prediction-circle pulse-red';
                 } else {
-                    toolActive = false;
-                    keyBtn.disabled = false;
-                    keyBtn.textContent = 'KÍCH HOẠT TOOL';
-                    keyMsg.textContent = '❌ Key kích hoạt không chính xác.';
-                    keyMsg.className = 'key-msg error';
+                    duDoanText.style.color = 'var(--text)';
+                    predCircle.className = 'prediction-circle';
                 }
-            }, 800);
-        }
-
-        async function callAPI() {
-            if (!toolActive || isFetching) return;
-            isFetching = true;
-            fetchingIndicator.style.display = 'flex';
-
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
-
-            try {
-                const targetUrl = API_URLS[currentTable] + '?nocache=' + Date.now();
-                const response = await fetch(targetUrl, {
-                    method: 'GET',
-                    mode: 'cors',
-                    signal: controller.signal,
-                    headers: {
-                        'Cache-Control': 'no-cache',
-                        'Pragma': 'no-cache'
-                    }
-                });
-
-                clearTimeout(timeoutId);
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                const data = await response.json();
-
-                if (data && data.phien_hien_tai) {
-                    processEngineData(data);
-                    fetchFailCount = 0; // reset
-                } else {
-                    throw new Error('Dữ liệu không hợp lệ');
-                }
-            } catch (err) {
-                clearTimeout(timeoutId);
-                console.warn('Lỗi kết nối:', err.message);
-                fetchFailCount++;
-
-                duDoanText.textContent = 'CONNECT';
-                duDoanText.style.color = 'var(--orange)';
-                predCircle.className = 'prediction-circle pulse-connecting';
-                doTinCayText.textContent = 'Đang thử lại...';
-
-                if (fetchFailCount >= 3) {
-                    clearInterval(intervalId);
-                    intervalId = null;
-                    setTimeout(() => {
-                        if (toolActive) startLoop();
-                    }, RETRY_DELAY);
-                }
-            } finally {
-                isFetching = false;
-                fetchingIndicator.style.display = 'none';
-            }
-        }
-
-        function normalizeResult(str) {
-            if (!str) return '---';
-            const s = str.toUpperCase();
-            if (s.includes('XIU') || s.includes('XỈU')) return 'XỈU';
-            if (s.includes('TAI') || s.includes('TÀI')) return 'TÀI';
-            return '---';
-        }
-
-        function processEngineData(data) {
-            const phienHienTai = data.phien_hien_tai;
-            const duDoanRaw = data.du_doan || '---';
-            const ketQuaRaw = data.ket_qua || '---';
-            const tyLeRaw = currentTable === 'md5' ? data.ty_le : data.confidence;
-            let doTinCay = tyLeRaw ? (typeof tyLeRaw === 'number' ? tyLeRaw + '%' : tyLeRaw) : '--%';
-
-            const duDoan = normalizeResult(duDoanRaw);
-            const ketQua = normalizeResult(ketQuaRaw);
-
-            phienText.textContent = '#' + phienHienTai;
-            duDoanText.textContent = duDoan;
-
-            if (duDoan === 'TÀI') {
-                duDoanText.style.color = 'var(--green)';
-                predCircle.className = 'prediction-circle pulse-green';
-            } else if (duDoan === 'XỈU') {
-                duDoanText.style.color = 'var(--red)';
-                predCircle.className = 'prediction-circle pulse-red';
-            } else {
-                duDoanText.style.color = 'var(--text)';
-                predCircle.className = 'prediction-circle';
+                doTinCayText.textContent = 'Độ tin cậy: ' + doTinCay;
             }
 
-            doTinCayText.textContent = 'Độ tin cậy: ' + doTinCay;
-            
-            if (duDoan !== '---') {
-                predictionsMap[phienHienTai] = duDoan;
-                const keys = Object.keys(predictionsMap);
-                if (keys.length > 20) {
-                    const oldestKey = keys.sort((a,b) => a - b)[0];
-                    delete predictionsMap[oldestKey];
-                }
-            }
+            async function callAPI() {
+                if (!toolActive || isFetching) return;
+                isFetching = true;
+                fetchingIndicator.style.display = 'flex';
 
-            let phienKetQua = data.phien || data.last_phien;
-            if (phienKetQua && ketQua !== '---') {
-                let targetDuDoan = data.du_doan_phien_truoc ? normalizeResult(data.du_doan_phien_truoc) : null;
-                if (!targetDuDoan || targetDuDoan === '---') {
-                    targetDuDoan = predictionsMap[phienKetQua] || null;
-                }
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
 
-                if (targetDuDoan && !historyList.some(item => parseInt(item.phien) === parseInt(phienKetQua))) {
-                    const isWin = (ketQua === targetDuDoan);
-                    historyList.unshift({
-                        phien: phienKetQua,
-                        ketQua: ketQua,
-                        duDoan: targetDuDoan,
-                        isWin: isWin
+                try {
+                    const url = API_URLS[currentTable] + '?nocache=' + Date.now();
+                    const response = await fetch(url, {
+                        method: 'GET',
+                        mode: 'cors',
+                        signal: controller.signal,
+                        headers: {
+                            'Cache-Control': 'no-cache',
+                            'Pragma': 'no-cache'
+                        }
                     });
-                    if (historyList.length > HISTORY_LIMIT) historyList.pop();
-                    renderHistory();
 
-                    delete predictionsMap[phienKetQua];
+                    clearTimeout(timeoutId);
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+                    let data;
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        data = await response.json();
+                    } else {
+                        const text = await response.text();
+                        try {
+                            data = JSON.parse(text);
+                        } catch (e) {
+                            throw new Error('API không trả về JSON hợp lệ');
+                        }
+                    }
+
+                    if (data && data.phien_hien_tai) {
+                        processData(data);
+                        fetchFailCount = 0;
+                    } else {
+                        throw new Error('Dữ liệu thiếu phien_hien_tai');
+                    }
+                } catch (err) {
+                    clearTimeout(timeoutId);
+                    console.warn('⚠️ Lỗi fetch:', err.message);
+                    fetchFailCount++;
+
+                    duDoanText.textContent = 'ERROR';
+                    duDoanText.style.color = 'var(--orange)';
+                    predCircle.className = 'prediction-circle pulse-connecting';
+                    doTinCayText.textContent = 'Đang thử lại...';
+
+                        if (fetchFailCount >= 3) {
+                        clearInterval(intervalId);
+                        intervalId = null;
+                        setTimeout(() => {
+                            if (toolActive) startLoop();
+                        }, RETRY_DELAY);
+                    }
+                } finally {
+                    isFetching = false;
+                    fetchingIndicator.style.display = 'none';
                 }
             }
 
-            lastPred = { phien: phienHienTai, duDoan: duDoan };
-        }
+            function processData(data) {
+                const phienHienTai = data.phien_hien_tai;
+                const duDoan = normalizeResult(data.du_doan);
+                const ketQua = normalizeResult(data.ket_qua);
+                const tyLeRaw = currentTable === 'md5' ? data.ty_le : data.confidence;
+                const doTinCay = tyLeRaw ? (typeof tyLeRaw === 'number' ? tyLeRaw + '%' : tyLeRaw) : '--%';
 
-        function renderHistory() {
-            if (historyList.length === 0) {
-                historyBody.innerHTML = `<tr><td colspan="4" style="color:var(--text-secondary); font-size:13px; padding:35px 0;">Đang chờ dữ liệu phiên tiếp theo...</td></tr>`;
-                return;
+                phienText.textContent = '#' + phienHienTai;
+                updatePredictionUI(duDoan, doTinCay);
+                if (duDoan !== '---' && !predictionsMap[phienHienTai]) {
+                    predictionsMap[phienHienTai] = duDoan;
+                    // Giới hạn map 20 phần tử
+                    const keys = Object.keys(predictionsMap);
+                    if (keys.length > 20) {
+                        const oldest = keys.sort((a,b) => a - b)[0];
+                        delete predictionsMap[oldest];
+                    }
+                }
+
+                const phienKetQua = data.phien || data.last_phien;
+                if (phienKetQua && ketQua !== '---') {
+                    let predicted = data.du_doan_phien_truoc ? normalizeResult(data.du_doan_phien_truoc) : null;
+                    if (!predicted || predicted === '---') {
+                        predicted = predictionsMap[phienKetQua] || null;
+                    }
+
+                    if (predicted && !historyList.some(item => item.phien == phienKetQua)) {
+                        const isWin = (ketQua === predicted);
+                        historyList.unshift({
+                            phien: phienKetQua,
+                            ketQua: ketQua,
+                            duDoan: predicted,
+                            isWin: isWin
+                        });
+                        if (historyList.length > HISTORY_LIMIT) historyList.pop();
+                        renderHistory();
+
+                        delete predictionsMap[phienKetQua];
+                    }
+                }
             }
-            historyBody.innerHTML = historyList.map(item => `
-                <tr>
-                    <td style="color: var(--text-secondary);">#${item.phien}</td>
-                    <td style="color:${item.ketQua === 'TÀI' ? 'var(--green)' : 'var(--red)'}">${item.ketQua}</td>
-                    <td style="color:${item.duDoan === 'TÀI' ? 'var(--green)' : 'var(--red)'}">${item.duDoan}</td>
-                    <td>
-                        <span class="${item.isWin ? 'status-win' : 'status-lose'}">
-                            <span class="${item.isWin ? 'icon-check' : 'icon-cross'}"></span>
-                            ${item.isWin ? 'HÚP' : 'GÃY'}
-                        </span>
-                    </td>
-                </tr>
-            `).join('');
-        }
 
-        function startLoop() {
-            if (intervalId) clearInterval(intervalId);
-            callAPI();
-            intervalId = setInterval(callAPI, 10000);
-        }
+            function startLoop() {
+                if (intervalId) clearInterval(intervalId);
+                callAPI();                       
+                intervalId = setInterval(callAPI, POLL_INTERVAL);
+            }
 
-        menuBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            menuPanel.style.display = menuPanel.style.display === 'flex' ? 'none' : 'flex';
-        });
+            window.submitKey = function() {
+                const key = keyInput.value.trim();
+                if (!key) {
+                    keyMsg.textContent = 'Vui lòng nhập key bản quyền!';
+                    keyMsg.className = 'key-msg error';
+                    return;
+                }
+                keyBtn.disabled = true;
+                keyBtn.textContent = 'ĐANG CẬP NHẬT...';
+                keyMsg.textContent = '';
 
-        document.addEventListener('click', () => {
-            menuPanel.style.display = 'none';
-        });
+                setTimeout(() => {
+                    if (key === MASTER_KEY) {
+                        toolActive = true;
+                        keyMsg.textContent = '✅ Thiết bị xác thực thành công!';
+                        keyMsg.className = 'key-msg success';
+                        setTimeout(() => {
+                            keyOverlay.classList.add('hidden');
+                            mainContent.style.display = 'flex';
+                            startLoop();
+                        }, 500);
+                    } else {
+                        toolActive = false;
+                        keyBtn.disabled = false;
+                        keyBtn.textContent = 'KÍCH HOẠT TOOL';
+                        keyMsg.textContent = '❌ Key kích hoạt không chính xác.';
+                        keyMsg.className = 'key-msg error';
+                    }
+                }, 800);
+            };
 
-        function switchTable(table) {
-            currentTable = table;
-            headerTitle.textContent = table === 'md5' ? 'HITCLUB MD5' : 'HITCLUB HŨ';
-            menuPanel.style.display = 'none';
+            menuBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                menuPanel.style.display = menuPanel.style.display === 'flex' ? 'none' : 'flex';
+            });
+            document.addEventListener('click', () => {
+                menuPanel.style.display = 'none';
+            });
 
-            historyList = [];
-            predictionsMap = {};
-            lastPred = null;
-            fetchFailCount = 0;
+            window.switchTable = function(table) {
+                currentTable = table;
+                headerTitle.textContent = table === 'md5' ? 'HITCLUB MD5' : 'HITCLUB HŨ';
+                menuPanel.style.display = 'none';
 
-            phienText.textContent = '#-------';
-            duDoanText.textContent = '---';
-            duDoanText.style.color = 'var(--text)';
-            doTinCayText.textContent = '--%';
-            predCircle.className = 'prediction-circle';
-            renderHistory();
+                // Reset state
+                historyList = [];
+                predictionsMap = {};
+                fetchFailCount = 0;
 
-            startLoop();
-        }
+                phienText.textContent = '#-------';
+                updatePredictionUI('---', '--%');
+                renderHistory();
+                startLoop();
+            };
+        })();
     </script>
 </body>
 </html>
